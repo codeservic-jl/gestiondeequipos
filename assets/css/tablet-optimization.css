@@ -1,0 +1,241 @@
+/* Optimizaciones específicas para tablets */
+
+/* Breakpoint para tablets (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Contenedor principal */
+    .main-content {
+        padding: 1rem;
+        max-width: 100%;
+    }
+    
+    /* Formularios */
+    form {
+        max-width: 100%;
+        margin: 0;
+    }
+    
+    /* Campos de entrada optimizados para tablets */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="password"],
+    select,
+    textarea {
+        font-size: 16px; /* Evita zoom en tablets */
+        padding: 12px;
+        border-radius: 8px;
+        border: 2px solid #e5e7eb;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    /* Focus states */
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    
+    /* Labels */
+    label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: block;
+        color: #374151;
+    }
+    
+    /* Grupos de campos */
+    .form-group,
+    .mb-4,
+    .mb-6 {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Grid layouts adaptativos para tablets */
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    /* Layout de dos columnas que se adapta */
+    .grid-cols-2 {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+    
+    /* Botones optimizados para touch */
+    button,
+    .btn {
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-height: 44px; /* Tamaño mínimo para touch */
+    }
+    
+    /* Botón primario */
+    .bg-blue-600,
+    .btn-primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        color: white;
+    }
+    
+    .bg-blue-600:hover,
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    /* Cards y contenedores */
+    .bg-white,
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Títulos */
+    h1, h2, h3 {
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #111827;
+    }
+    
+    h1 {
+        font-size: 1.75rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+    }
+    
+    /* File inputs */
+    input[type="file"] {
+        padding: 8px;
+        border: 2px dashed #d1d5db;
+        border-radius: 8px;
+        background: #f9fafb;
+    }
+    
+    input[type="file"]:focus {
+        border-color: #3b82f6;
+        background: #eff6ff;
+    }
+    
+    /* Radio buttons y checkboxes */
+    input[type="radio"],
+    input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 0.5rem;
+    }
+    
+    /* Mensajes de error y éxito */
+    .text-red-600,
+    .error-message {
+        color: #dc2626;
+        font-size: 14px;
+        margin-top: 0.25rem;
+    }
+    
+    .text-green-600,
+    .success-message {
+        color: #059669;
+        font-size: 14px;
+        margin-top: 0.25rem;
+    }
+    
+    /* Información de archivos */
+    .file-validation-info {
+        margin-top: 0.75rem;
+        padding: 0.75rem;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+    
+    /* Espaciado mejorado */
+    .space-y-4 > * + * {
+        margin-top: 1rem;
+    }
+    
+    .space-y-6 > * + * {
+        margin-top: 1.5rem;
+    }
+    
+    /* Optimización para formularios específicos */
+    .form-container {
+        max-width: 100%;
+        padding: 1rem;
+    }
+    
+    /* Ajustes para formularios de órdenes */
+    .order-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    /* Campos de texto largos */
+    textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+    
+    /* Contenedores de información */
+    .info-panel {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Botones de acción */
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .action-buttons button {
+        flex: 1;
+        min-width: 120px;
+    }
+}
+
+/* Optimización para tablets en orientación landscape */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    
+    .main-content {
+        padding: 0.75rem;
+    }
+    
+    .bg-white,
+    .card {
+        padding: 1rem;
+    }
+}
+
+/* Animaciones suaves */
+.form-group,
+input,
+select,
+textarea,
+button {
+    transition: all 0.2s ease-in-out;
+} 

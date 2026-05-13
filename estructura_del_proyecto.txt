@@ -1,0 +1,25 @@
+/simplephp
+├── assets/
+│   ├── css/
+│   │   ├── styles.css
+│   │   └── tailwind.css
+│   ├── js/
+│   │   └── main.js
+│   └── img/
+│       └── logo.png
+├── config/
+│   └── database.php
+├── includes/
+│   ├── header.php
+│   ├── footer.php
+│   ├── navbar.php
+│   └── functions.php
+├── modules/
+│   ├── clientes/
+│   ├── equipos/
+│   ├── ordenes/
+│   ├── seguimientos/
+│   ├── usuarios/
+│   └── configuracion/
+├── index.php
+└── login.php

@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Logs de PHP
+error_log
+**/error_log
+
+# Información del servidor (no debe exponerse)
+phpinfo.php
+php.ini
+
+# Archivos subidos por usuarios (datos de producción)
+uploads/ordenes/*/
+
+# Configuración local (ajustar antes de subir a producción)
+# config/database.php
