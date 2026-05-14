@@ -1,0 +1,7 @@
+.git
+.DS_Store
+**/.DS_Store
+uploads/ordenes/*/
+database/ingresdodeequipos.sql
+MEJORAS_UX.md
+estructura_del_proyecto.txt
