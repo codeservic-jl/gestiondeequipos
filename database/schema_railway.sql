@@ -188,6 +188,21 @@ CREATE TABLE IF NOT EXISTS orden_imagenes (
   CONSTRAINT orden_imagenes_ibfk_1 FOREIGN KEY (id_orden) REFERENCES ordenes_trabajo (id_orden)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS ventas_orden (
+  id_venta int(11) NOT NULL AUTO_INCREMENT,
+  id_orden int(11) NOT NULL,
+  id_seguimiento int(11) NOT NULL,
+  producto varchar(255) NOT NULL,
+  ganancia_neta decimal(10,2) NOT NULL DEFAULT 0.00,
+  id_usuario_registro int(11) NOT NULL,
+  fecha_registro datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (id_venta),
+  KEY fk_venta_orden (id_orden),
+  KEY fk_venta_seguimiento (id_seguimiento),
+  CONSTRAINT ventas_orden_ibfk_1 FOREIGN KEY (id_orden) REFERENCES ordenes_trabajo (id_orden),
+  CONSTRAINT ventas_orden_ibfk_2 FOREIGN KEY (id_seguimiento) REFERENCES seguimientos_orden (id_seguimiento)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 INSERT IGNORE INTO tipos_usuario (id_tipo, nombre, descripcion, estado) VALUES
 (1, 'Administrador', 'Control total del sistema', 1),
 (2, 'Técnico', 'Personal técnico de mantenimiento', 1),

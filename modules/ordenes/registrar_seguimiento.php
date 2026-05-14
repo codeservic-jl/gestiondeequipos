@@ -178,11 +178,13 @@ try {
     $stmt->execute();
     $tipos_servicio = $stmt->fetchAll();
 
-    // Obtener seguimientos existentes
+    // Obtener seguimientos existentes con info de ventas
     $stmt = $conn->prepare("
-        SELECT so.*, u.nombre_completo as usuario_nombre
+        SELECT so.*, u.nombre_completo as usuario_nombre,
+               v.producto as venta_producto, v.ganancia_neta as venta_ganancia
         FROM seguimientos_orden so
         LEFT JOIN usuarios u ON so.id_tecnico = u.id_usuario
+        LEFT JOIN ventas_orden v ON v.id_seguimiento = so.id_seguimiento
         WHERE so.id_orden = ?
         ORDER BY so.fecha_registro DESC
     ");
@@ -258,6 +260,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $valor_cobrar
         ]);
 
+        $id_seguimiento = $conn->lastInsertId();
+
+        // Registrar venta si se indicó
+        if (!empty($_POST['vendio_algo']) && $_POST['vendio_algo'] === 'si') {
+            $producto  = trim($_POST['producto_vendido'] ?? '');
+            $ganancia  = floatval($_POST['ganancia_neta'] ?? 0);
+            if (!empty($producto) && $ganancia >= 0) {
+                $stmt = $conn->prepare("
+                    INSERT INTO ventas_orden (id_orden, id_seguimiento, producto, ganancia_neta, id_usuario_registro)
+                    VALUES (?, ?, ?, ?, ?)
+                ");
+                $stmt->execute([$id_orden, $id_seguimiento, $producto, $ganancia, $_SESSION['user_id']]);
+            }
+        }
+
         // Actualizar el estado de la orden
         $stmt = $conn->prepare("
             UPDATE ordenes_trabajo
@@ -311,9 +328,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Recargar los seguimientos
         $stmt = $conn->prepare("
-            SELECT so.*, u.nombre_completo as usuario_nombre
+            SELECT so.*, u.nombre_completo as usuario_nombre,
+                   v.producto as venta_producto, v.ganancia_neta as venta_ganancia
             FROM seguimientos_orden so
             LEFT JOIN usuarios u ON so.id_tecnico = u.id_usuario
+            LEFT JOIN ventas_orden v ON v.id_seguimiento = so.id_seguimiento
             WHERE so.id_orden = ?
             ORDER BY so.fecha_registro DESC
         ");
@@ -627,15 +646,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                 </div>
 
+                                <!-- ── Sección: Registro de Venta ── -->
+                                <div class="mt-6">
+                                    <div class="border-2 border-dashed border-amber-300 bg-amber-50 rounded-xl p-5">
+                                        <label class="flex items-center gap-3 cursor-pointer select-none">
+                                            <input type="checkbox" name="vendio_algo" id="vendio_algo" value="si"
+                                                   onchange="toggleSeccionVenta(this)"
+                                                   class="w-5 h-5 rounded accent-green-600 cursor-pointer">
+                                            <span class="font-semibold text-gray-800 text-base">
+                                                <i class="fas fa-shopping-bag text-amber-500 mr-2"></i>
+                                                ¿Se vendió algún producto en esta visita?
+                                            </span>
+                                        </label>
+
+                                        <div id="seccion_venta" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4" style="display:none">
+                                            <div>
+                                                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                                    Producto vendido <span class="text-red-500">*</span>
+                                                </label>
+                                                <input type="text" name="producto_vendido" id="producto_vendido"
+                                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                                                       placeholder="Ej: Memoria RAM 8GB, Cable HDMI…">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                                    Ganancia neta <span class="text-red-500">*</span>
+                                                    <span class="text-xs text-gray-500 font-normal ml-1">(precio venta − costo producto)</span>
+                                                </label>
+                                                <div class="relative">
+                                                    <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
+                                                    <input type="number" name="ganancia_neta" id="ganancia_neta"
+                                                           min="0" step="0.01"
+                                                           class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                                                           placeholder="0.00">
+                                                </div>
+                                                <p class="text-xs text-amber-700 mt-1">
+                                                    <i class="fas fa-info-circle mr-1"></i>
+                                                    Esta ganancia se registra para el reporte de rentabilidad
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="mt-6">
                                     <label class="block text-sm font-medium text-gray-700 mb-2">
                                         Procedimiento Realizado *
                                     </label>
                                     <textarea name="procedimiento" required rows="4"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
                                         placeholder="Describa el trabajo realizado, diagnóstico, reparación, o cualquier procedimiento importante..."></textarea>
                                 </div>
-                                
+
                                 <div class="mt-6 flex justify-end space-x-4">
                                     <a href="lista.php" 
                                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
@@ -679,6 +741,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                                 $<?php echo number_format($seguimiento['valor_cobrar'], 2); ?>
                                                             </span>
                                                         <?php endif; ?>
+                                                        <?php if (!empty($seguimiento['venta_producto'])): ?>
+                                                            <span class="px-3 py-1 bg-amber-100 text-amber-800 text-sm font-medium rounded-full">
+                                                                <i class="fas fa-shopping-bag mr-1"></i>
+                                                                <?php echo htmlspecialchars($seguimiento['venta_producto']); ?>
+                                                                — Ganancia: $<?php echo number_format($seguimiento['venta_ganancia'], 2); ?>
+                                                            </span>
+                                                        <?php endif; ?>
                                                     </div>
                                                     <span class="text-sm text-gray-500">
                                                         Por: <?php echo htmlspecialchars($seguimiento['usuario_nombre']); ?>
@@ -699,6 +768,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <script>
+        function toggleSeccionVenta(checkbox) {
+            var seccion = document.getElementById('seccion_venta');
+            seccion.style.display = checkbox.checked ? 'grid' : 'none';
+            var producto = document.getElementById('producto_vendido');
+            var ganancia = document.getElementById('ganancia_neta');
+            if (checkbox.checked) {
+                producto.required = true;
+                ganancia.required = true;
+                producto.focus();
+            } else {
+                producto.required = false;
+                ganancia.required = false;
+                producto.value = '';
+                ganancia.value = '';
+            }
+        }
+
         // Auto-hide success message after 5 seconds
         setTimeout(function() {
             const successMessage = document.querySelector('.success-message');
