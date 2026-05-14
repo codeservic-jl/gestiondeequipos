@@ -176,6 +176,18 @@ CREATE TABLE IF NOT EXISTS orden_estados (
   PRIMARY KEY (id_orden_estado)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS orden_imagenes (
+  id_imagen int(11) NOT NULL AUTO_INCREMENT,
+  id_orden int(11) NOT NULL,
+  nombre_archivo varchar(255) NOT NULL,
+  ruta_archivo varchar(500) NOT NULL,
+  tamano_archivo int(11) DEFAULT NULL,
+  fecha_registro datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (id_imagen),
+  KEY fk_img_orden (id_orden),
+  CONSTRAINT orden_imagenes_ibfk_1 FOREIGN KEY (id_orden) REFERENCES ordenes_trabajo (id_orden)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 INSERT IGNORE INTO tipos_usuario (id_tipo, nombre, descripcion, estado) VALUES
 (1, 'Administrador', 'Control total del sistema', 1),
 (2, 'Técnico', 'Personal técnico de mantenimiento', 1),
