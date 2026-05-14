@@ -69,11 +69,14 @@ if (empty($equipos)) {
 //     error_log("Equipo: " . $equipo['marca'] . " " . $equipo['modelo'] . " " . $equipo['numero_serial']);
 // }
 
-// Obtener seguimientos de la orden
+// Obtener seguimientos de la orden con datos de venta y colega
 $stmt = $conn->prepare("
-    SELECT s.*, u.nombre_completo as tecnico
+    SELECT s.*, u.nombre_completo as tecnico,
+           v.producto as venta_producto, v.valor_compra as venta_compra,
+           v.valor_venta as venta_precio, v.ganancia_neta as venta_ganancia
     FROM seguimientos_orden s
     JOIN usuarios u ON s.id_tecnico = u.id_usuario
+    LEFT JOIN ventas_orden v ON v.id_seguimiento = s.id_seguimiento
     WHERE s.id_orden = ?
     ORDER BY s.fecha_registro DESC
 ");
@@ -825,15 +828,44 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="flex flex-col items-end gap-3">
+                                        <div class="flex flex-col items-end gap-2">
+                                            <?php
+                                            $total_seguimiento = floatval($seguimiento['valor_cobrar']) + floatval($seguimiento['venta_precio'] ?? 0);
+                                            $hay_venta = !empty($seguimiento['venta_producto']);
+                                            $hay_colega = !empty($seguimiento['costo_externo']);
+                                            ?>
                                             <div class="text-right">
                                                 <div class="text-2xl font-bold text-green-600">
                                                     $<?php echo number_format($seguimiento['valor_cobrar'], 2); ?>
                                                 </div>
-                                                <div class="text-sm text-gray-500">Valor del servicio</div>
+                                                <div class="text-xs text-gray-500">Valor del servicio</div>
                                             </div>
+                                            <?php if ($hay_venta): ?>
+                                            <div class="text-right">
+                                                <div class="text-sm font-semibold text-amber-600">
+                                                    + $<?php echo number_format($seguimiento['venta_precio'], 2); ?>
+                                                </div>
+                                                <div class="text-xs text-gray-500">
+                                                    Venta: <?php echo htmlspecialchars($seguimiento['venta_producto']); ?>
+                                                </div>
+                                            </div>
+                                            <div class="text-right border-t border-gray-200 pt-1">
+                                                <div class="text-lg font-bold text-indigo-700">
+                                                    $<?php echo number_format($total_seguimiento, 2); ?>
+                                                </div>
+                                                <div class="text-xs text-gray-400">Total combinado</div>
+                                            </div>
+                                            <?php endif; ?>
+                                            <?php if ($hay_colega): ?>
+                                            <div class="text-right">
+                                                <div class="text-xs font-medium text-blue-600">
+                                                    Colega: −$<?php echo number_format($seguimiento['costo_externo'], 2); ?>
+                                                </div>
+                                                <div class="text-xs text-gray-400"><?php echo htmlspecialchars($seguimiento['descripcion_externo']); ?></div>
+                                            </div>
+                                            <?php endif; ?>
                                             <a href="imprimir_seguimiento.php?id=<?php echo $seguimiento['id_seguimiento']; ?>"
-                                                class="btn bg-gray-600 hover:bg-gray-700 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-200">
+                                                class="btn bg-gray-700 hover:bg-gray-800 text-white text-sm px-4 py-2 rounded-lg transition-colors duration-200">
                                                 <i class="fas fa-print mr-2"></i> Imprimir
                                             </a>
                                         </div>
