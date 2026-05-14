@@ -1,6 +1,6 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# Instalar dependencias del sistema necesarias para las extensiones PHP
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -11,31 +11,12 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql mysqli gd
 
-# Eliminar MPM conflictivos y asegurar solo mpm_prefork
-RUN rm -f /etc/apache2/mods-enabled/mpm_event.conf \
-          /etc/apache2/mods-enabled/mpm_event.load \
-          /etc/apache2/mods-enabled/mpm_worker.conf \
-          /etc/apache2/mods-enabled/mpm_worker.load \
-    && a2enmod mpm_prefork rewrite
+WORKDIR /app
 
-# Suprimir advertencia de ServerName
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+COPY . /app/
 
-# Permitir .htaccess
-RUN sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+RUN mkdir -p /app/uploads/ordenes && chmod -R 755 /app/uploads/
 
-# Copiar archivos del proyecto
-COPY . /var/www/html/
+EXPOSE 8080
 
-# Crear carpeta de uploads con permisos correctos
-RUN mkdir -p /var/www/html/uploads/ordenes && \
-    chown -R www-data:www-data /var/www/html/uploads/ && \
-    chmod -R 755 /var/www/html/uploads/
-
-# Script de inicio para ajustar el puerto dinámico de Railway
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-EXPOSE 80
-
-CMD ["/start.sh"]
+CMD sh -c "php -S 0.0.0.0:${PORT:-8080} -t /app"
