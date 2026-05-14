@@ -185,14 +185,25 @@ $sc = $estadoConfig[$orden['estado']] ?? ['bg' => '#f3f4f6', 'text' => '#374151'
         }
 
         /* Print ticket */
-        @media print {
-            body * { visibility: hidden; }
-            #imprimir_ticket, #imprimir_ticket * { visibility: visible; }
-            #imprimir_ticket { position: absolute; left:0; top:0; width:210mm; margin:0; padding:0; }
-            @page { size: A4; margin: 0; }
-            .main-content { margin: 0 !important; padding: 0 !important; }
+        /* Ticket oculto fuera de pantalla (display:none bloquea print) */
+        #imprimir_ticket {
+            position: absolute;
+            left: -99999px;
+            top: 0;
+            visibility: hidden;
         }
-        #imprimir_ticket { display: none; }
+        @media print {
+            /* Ocultar todo excepto el ticket */
+            body > *:not(#imprimir_ticket) { display: none !important; }
+            #imprimir_ticket {
+                display: block !important;
+                position: static !important;
+                left: auto !important;
+                visibility: visible !important;
+                width: 100%;
+            }
+            @page { size: A4; margin: 0.8cm; }
+        }
     </style>
 </head>
 <body>
@@ -200,6 +211,13 @@ $sc = $estadoConfig[$orden['estado']] ?? ['bg' => '#f3f4f6', 'text' => '#374151'
 
 <div class="main-content">
 <div class="container mx-auto px-4 py-8 max-w-6xl">
+
+    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'seguimiento_actualizado'): ?>
+    <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-lg mb-5 flex gap-3">
+        <i class="fas fa-check-circle text-green-500 mt-0.5"></i>
+        <p class="text-green-700 font-semibold text-sm">Seguimiento actualizado correctamente.</p>
+    </div>
+    <?php endif; ?>
 
     <!-- ── Cabecera ── -->
     <div class="card mb-6">
@@ -425,6 +443,10 @@ $sc = $estadoConfig[$orden['estado']] ?? ['bg' => '#f3f4f6', 'text' => '#374151'
                                 </div>
                                 <?php endif; ?>
                             </div>
+                            <a href="editar_seguimiento.php?id=<?php echo $seg['id_seguimiento']; ?>"
+                                class="flex items-center gap-2 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-semibold transition-colors">
+                                <i class="fas fa-edit"></i> Editar
+                            </a>
                             <a href="imprimir_seguimiento.php?id=<?php echo $seg['id_seguimiento']; ?>"
                                 class="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-900 text-white rounded-lg text-xs font-semibold transition-colors">
                                 <i class="fas fa-print"></i> Imprimir
