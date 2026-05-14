@@ -41,8 +41,8 @@ class MobileMenu {
         // Cerrar menú al hacer clic en un enlace (en móvil)
         const menuLinks = this.sidebar.querySelectorAll('a');
         menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth < 768) {
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth < 768 && !e.defaultPrevented) {
                     this.closeMenu();
                 }
             });

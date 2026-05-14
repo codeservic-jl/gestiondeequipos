@@ -415,8 +415,7 @@ $current_page = getCurrentPage();
         </div>
         <?php endif; ?>
 
-        <a href="<?php echo $base_url; ?>logout.php" 
-           onclick="return confirm('⚠️ ¿Está seguro de que desea cerrar sesión?\n\nSe perderá el acceso al sistema.')"
+        <a href="<?php echo $base_url; ?>logout.php"
            class="logout-button logout-warning flex items-center px-6 py-4 text-white mt-auto transition-all duration-300 border-l-4 border-red-400 shadow-lg hover:shadow-xl transform hover:scale-105">
             <i class="fas fa-sign-out-alt w-5 text-xl"></i>
             <span class="ml-3 font-bold text-lg">Cerrar Sesión</span>
@@ -451,10 +450,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Confirmación mejorada
         logoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
             const confirmed = confirm('⚠️ ADVERTENCIA ⚠️\n\n¿Está seguro de que desea cerrar sesión?\n\n• Se perderá el acceso al sistema\n• Deberá volver a iniciar sesión\n• Cualquier trabajo no guardado se perderá\n\n¿Desea continuar?');
-            if (!confirmed) {
-                e.preventDefault();
-                return false;
+            if (confirmed) {
+                window.location.href = this.href;
             }
         });
     }
