@@ -46,7 +46,7 @@ $html = '';
 foreach ($clientes as $cliente) {
     $html .= '<tr class="border-b hover:bg-gray-50">';
     $html .= '<td class="px-4 py-2  text-gray-500">';
-    $html .= '<a href="ver_cliente.php?id=' . $cliente['id_cliente'] . '" class="text-blue-600 hover:text-blue-800 mr-2" title="Ver detalles"><i class="fas fa-eye"></i></a>';
+    $html .= '<a href="ver_cliente.php?id=' . $cliente['id_cliente'] . '" class="text-green-700 hover:text-blue-800 mr-2" title="Ver detalles"><i class="fas fa-eye"></i></a>';
     $html .= '<a href="editar.php?id=' . $cliente['id_cliente'] . '" class="text-yellow-600 hover:text-yellow-800 mr-2" title="Editar cliente"><i class="fas fa-edit"></i></a>';
     $html .= '<a href="eliminar.php?id=' . $cliente['id_cliente'] . '" class="text-red-600 hover:text-red-800" onclick="return confirm(\'¿Está seguro de que desea eliminar este cliente?\')" title="Eliminar cliente"><i class="fas fa-trash"></i></a>';
     $html .= '</td>';

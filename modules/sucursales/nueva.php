@@ -76,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div>
                         <label class="flex items-center">
                             <input type="checkbox" name="estado" checked
-                                   class="form-checkbox h-5 w-5 text-blue-600">
+                                   class="form-checkbox h-5 w-5 text-green-600">
                             <span class="ml-2 text-gray-700">Activo</span>
                         </label>
                     </div>

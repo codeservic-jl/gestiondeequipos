@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     
                     <div class="flex items-center">
                         <input type="checkbox" name="estado" id="estado" checked
-                               class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                               class="rounded border-gray-300 text-green-700 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
                         <label for="estado" class="ml-2 block text-gray-700">Usuario Activo</label>
                     </div>
                     

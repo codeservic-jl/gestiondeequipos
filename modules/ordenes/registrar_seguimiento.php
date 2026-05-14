@@ -381,34 +381,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             display: none;
         }
         
-        /* Estilos de sidebar y responsive - EXACTAMENTE como en test_php_tablet.html */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 40;
-            transition: transform 0.3s ease-in-out;
-        }
-        .main-content {
-            margin-left: 250px;
-            transition: margin-left 0.3s ease-in-out;
-        }
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .sidebar { width: 200px !important; }
-            .main-content { margin-left: 200px !important; }
-            #menuButton { display: none !important; }
-        }
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); z-index: 50; }
-            .sidebar.active { transform: translateX(0); }
-            .sidebar.hidden { transform: translateX(-100%); }
-            .main-content { margin-left: 0; }
-            #menuButton { z-index: 60; transition: all 0.3s ease; }
-            #menuButton:hover { transform: scale(1.1); }
-        }
-        
         /* Estilos específicos para tablet en este formulario - EXACTAMENTE como en test_php_tablet.html */
         @media (min-width: 769px) and (max-width: 1024px) {
             .container {

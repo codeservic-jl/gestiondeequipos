@@ -49,7 +49,7 @@ $html = '';
 foreach ($equipos as $equipo) {
     $html .= '<tr class="border-b hover:bg-gray-50">';
     $html .= '<td class="px-4 py-2  text-gray-500">';
-    $html .= '<a href="ver.php?id=' . $equipo['id_equipo'] . '" class="text-blue-600 hover:text-blue-800 mr-2"> <i class="fas fa-eye"></i></a>';
+    $html .= '<a href="ver.php?id=' . $equipo['id_equipo'] . '" class="text-green-700 hover:text-blue-800 mr-2"> <i class="fas fa-eye"></i></a>';
     $html .= '<a href="editar.php?id=' . $equipo['id_equipo'] . '" class="text-yellow-600 hover:text-yellow-800 mr-2"><i class="fas fa-edit"></i> </a>';
     $html .= '<a href="#" class="text-red-600 hover:text-red-800 mr-2" onclick="confirmarEliminacion(' . $equipo['id_equipo'] . ')" ><i class="fas fa-trash"></i></a>';
     $html .= '</td>';

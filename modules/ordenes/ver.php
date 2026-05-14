@@ -495,14 +495,14 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div class="space-y-3">
                                     <div class="flex items-center gap-3">
-                                        <i class="fas fa-id-card text-blue-600 w-5"></i>
+                                        <i class="fas fa-id-card text-green-700 w-5"></i>
                                         <div>
                                             <span class="text-sm text-gray-500">Nombre</span>
                                             <div class="font-semibold text-gray-900"><?php echo htmlspecialchars($orden['cliente']); ?></div>
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-3">
-                                        <i class="fas fa-envelope text-blue-600 w-5"></i>
+                                        <i class="fas fa-envelope text-green-700 w-5"></i>
                                         <div>
                                             <span class="text-sm text-gray-500">Email</span>
                                             <div class="font-semibold text-gray-900"><?php echo htmlspecialchars($orden['cliente_email']); ?></div>
@@ -511,7 +511,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
                                 </div>
                                 <div class="space-y-3">
                                     <div class="flex items-center gap-3">
-                                        <i class="fas fa-phone text-blue-600 w-5"></i>
+                                        <i class="fas fa-phone text-green-700 w-5"></i>
                                         <div>
                                             <span class="text-sm text-gray-500">Teléfono</span>
                                             <div class="font-semibold text-gray-900"><?php echo htmlspecialchars($orden['cliente_telefono']); ?></div>
@@ -519,7 +519,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
                                     </div>
                                     <?php if (!empty($orden['identificacion'])): ?>
                                     <div class="flex items-center gap-3">
-                                        <i class="fas fa-id-badge text-blue-600 w-5"></i>
+                                        <i class="fas fa-id-badge text-green-700 w-5"></i>
                                         <div>
                                             <span class="text-sm text-gray-500">Identificación</span>
                                             <div class="font-semibold text-gray-900"><?php echo htmlspecialchars($orden['identificacion']); ?></div>
@@ -531,7 +531,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
                             <?php if (!empty($orden['empresa'])): ?>
                             <div class="mt-4 pt-4 border-t border-blue-200">
                                 <div class="flex items-center gap-3">
-                                    <i class="fas fa-building text-blue-600 w-5"></i>
+                                    <i class="fas fa-building text-green-700 w-5"></i>
                                     <div>
                                         <span class="text-sm text-gray-500">Empresa</span>
                                         <div class="font-semibold text-gray-900"><?php echo htmlspecialchars($orden['empresa']); ?></div>
@@ -628,7 +628,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
                     </div>
                     <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
                         <div class="text-center">
-                            <div class="text-lg font-semibold text-blue-600 mb-2">
+                            <div class="text-lg font-semibold text-green-700 mb-2">
                                 <?php echo htmlspecialchars($orden['estado_pago'] ?? 'Pendiente'); ?>
                             </div>
                             <div class="text-sm text-gray-600">Estado de Pago</div>

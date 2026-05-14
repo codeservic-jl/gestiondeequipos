@@ -225,21 +225,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="flex items-center space-x-2">
-                            <i class="fas fa-hashtag text-blue-600"></i>
+                            <i class="fas fa-hashtag text-green-700"></i>
                             <div>
                                 <span class="font-medium text-gray-700">Código:</span>
                                 <span class="text-gray-900 font-mono"><?php echo htmlspecialchars($orden['codigo']); ?></span>
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <i class="fas fa-calendar-alt text-blue-600"></i>
+                            <i class="fas fa-calendar-alt text-green-700"></i>
                             <div>
                                 <span class="font-medium text-gray-700">Fecha de Ingreso:</span>
                                 <span class="text-gray-900"><?php echo date('d/m/Y H:i', strtotime($orden['fecha_ingreso'])); ?></span>
                             </div>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <i class="fas fa-info-circle text-blue-600"></i>
+                            <i class="fas fa-info-circle text-green-700"></i>
                             <div>
                                 <span class="font-medium text-gray-700">Estado Actual:</span>
                                 <span class="badge <?php echo $orden['estado'] == 'Pendiente' ? 'badge-warning' : 'badge-success'; ?>">

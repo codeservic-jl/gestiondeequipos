@@ -234,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <!-- Tipo de Cliente -->
                         <div class="bg-gray-50 p-6 rounded-lg">
                             <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                                <i class="fas fa-users mr-2 text-blue-500"></i>
+                                <i class="fas fa-users mr-2 text-green-600"></i>
                                 Tipo de Cliente
                             </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

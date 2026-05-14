@@ -188,126 +188,40 @@ $current_page = getCurrentPage();
         }
     }
     
+    /* ── Sidebar base (todos los tamaños) ── */
     .sidebar {
         width: 250px;
         height: 100vh;
         position: fixed;
         left: 0;
         top: 0;
-        z-index: 40;
+        z-index: 100;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
         transition: transform 0.3s ease-in-out;
     }
-    
+
     .main-content {
         margin-left: 250px;
         transition: margin-left 0.3s ease-in-out;
     }
-    
-    /* Breakpoint específico para tablets */
+
+    /* ── Tablet (769px – 1024px): sidebar visible, sin hamburguesa ── */
     @media (min-width: 769px) and (max-width: 1024px) {
-        .sidebar {
-            width: 200px !important;
-        }
-        
-        .main-content {
-            margin-left: 200px !important;
-        }
-        
-        /* Ajustar el botón de menú para tablets */
-        #menuButton {
-            display: none !important;
-        }
-        
-        /* Optimizaciones para formularios en tablets */
-        .main-content {
-            padding: 1rem !important;
-        }
-        
-        /* Ajustar grid layouts en tablets */
-        .grid {
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-            gap: 1.5rem !important;
-        }
-        
-        /* Mejorar espaciado en formularios */
-        .main-content form {
-            max-width: 100% !important;
-        }
-        
-        /* Optimizar campos de entrada */
-        .main-content input,
-        .main-content select,
-        .main-content textarea {
-            font-size: 16px !important;
-            padding: 0.75rem !important;
-        }
-        
-        /* Ajustar botones */
-        .main-content button {
-            padding: 0.75rem 1.5rem !important;
-            font-size: 1rem !important;
-        }
-        
-        /* Optimizar cards y contenedores */
-        .main-content .bg-white,
-        .main-content .card {
-            border-radius: 12px !important;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
-            padding: 1.5rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        /* Mejorar espaciado de títulos */
-        .main-content h1,
-        .main-content h2 {
-            font-size: 1.5rem !important;
-            margin-bottom: 1rem !important;
-        }
-        
-        /* Optimizar campos de formulario específicos */
-        .main-content input[type="text"],
-        .main-content input[type="email"],
-        .main-content input[type="tel"],
-        .main-content input[type="number"],
-        .main-content input[type="password"],
-        .main-content select,
-        .main-content textarea {
-            font-size: 16px !important;
-            padding: 12px !important;
-            border-radius: 8px !important;
-            border: 2px solid #e5e7eb !important;
-            width: 100% !important;
-            box-sizing: border-box !important;
-        }
-        
-        /* Focus states */
-        .main-content input:focus,
-        .main-content select:focus,
-        .main-content textarea:focus {
-            outline: none !important;
-            border-color: #3b82f6 !important;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-        }
-        
-        /* Botones optimizados para touch */
-        .main-content button,
-        .main-content .btn {
-            padding: 12px 20px !important;
-            font-size: 16px !important;
-            font-weight: 600 !important;
-            border-radius: 8px !important;
-            border: none !important;
-            cursor: pointer !important;
-            transition: all 0.2s ease !important;
-            min-height: 44px !important;
-        }
-        
-        /* Layout de dos columnas que se adapta */
-        .main-content .grid-cols-2 {
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-        }
+        .sidebar { width: 200px !important; }
+        .main-content { margin-left: 200px !important; }
+        #menuButton { display: none !important; }
     }
-    
+
+    /* ── Desktop ancho (>1024px): sidebar completo ── */
+    @media (min-width: 1025px) {
+        .sidebar { width: 250px; }
+        .main-content { margin-left: 250px; }
+        #menuButton { display: none !important; }
+    }
+
+    /* ── Móvil (≤768px): sidebar oculto, hamburguesa visible ── */
     @media (max-width: 768px) {
         body {
             padding-top: calc(4rem + env(safe-area-inset-top, 0px));
@@ -315,22 +229,42 @@ $current_page = getCurrentPage();
 
         .sidebar {
             transform: translateX(-100%);
-            z-index: 50;
+            /* El JS controla z-index al abrir (9999). Este es el valor cerrado. */
+            z-index: 100;
             padding-top: env(safe-area-inset-top, 0px);
+            width: 280px;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
         }
 
+        /* Clase de respaldo para CSS puro (el JS ya usa inline styles) */
         .sidebar.active {
             transform: translateX(0);
         }
 
         .main-content {
-            margin-left: 0;
+            margin-left: 0 !important;
+        }
+
+        /* Entradas: fuente ≥16px para evitar zoom automático en iOS */
+        input, select, textarea {
+            font-size: 16px !important;
         }
 
         #menuButton {
+            position: fixed;
             top: calc(1rem + env(safe-area-inset-top, 0px));
-            z-index: 60;
-            transition: all 0.3s ease;
+            left: 1rem;
+            z-index: 10000;
+            /* Área táctil mínima Apple: 44×44pt */
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
         }
     }
 </style>

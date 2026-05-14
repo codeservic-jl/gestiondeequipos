@@ -139,7 +139,7 @@ try {
                             </div>
                             <div class="md:col-span-2">
                                 <label class="flex items-center">
-                                    <input type="checkbox" name="estado" class="form-checkbox h-5 w-5 text-blue-600"
+                                    <input type="checkbox" name="estado" class="form-checkbox h-5 w-5 text-green-600"
                                         <?php echo $cliente['estado'] ? 'checked' : ''; ?>>
                                     <span class="ml-2">Cliente Activo</span>
                                 </label>

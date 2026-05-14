@@ -164,7 +164,7 @@ try {
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="flex items-center gap-3">
-                            <div class="bg-blue-100 rounded-full p-2 text-blue-600">
+                            <div class="bg-blue-100 rounded-full p-2 text-green-700">
                                 <i class="fas fa-phone"></i>
                             </div>
                             <div>
