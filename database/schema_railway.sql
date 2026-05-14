@@ -193,6 +193,8 @@ CREATE TABLE IF NOT EXISTS ventas_orden (
   id_orden int(11) NOT NULL,
   id_seguimiento int(11) NOT NULL,
   producto varchar(255) NOT NULL,
+  valor_compra decimal(10,2) NOT NULL DEFAULT 0.00,
+  valor_venta decimal(10,2) NOT NULL DEFAULT 0.00,
   ganancia_neta decimal(10,2) NOT NULL DEFAULT 0.00,
   id_usuario_registro int(11) NOT NULL,
   fecha_registro datetime DEFAULT current_timestamp(),
@@ -202,6 +204,11 @@ CREATE TABLE IF NOT EXISTS ventas_orden (
   CONSTRAINT ventas_orden_ibfk_1 FOREIGN KEY (id_orden) REFERENCES ordenes_trabajo (id_orden),
   CONSTRAINT ventas_orden_ibfk_2 FOREIGN KEY (id_seguimiento) REFERENCES seguimientos_orden (id_seguimiento)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Columnas para registrar envío a colega/tercero en cada seguimiento
+ALTER TABLE seguimientos_orden
+  ADD COLUMN IF NOT EXISTS costo_externo decimal(10,2) DEFAULT NULL,
+  ADD COLUMN IF NOT EXISTS descripcion_externo varchar(255) DEFAULT NULL;
 
 INSERT IGNORE INTO tipos_usuario (id_tipo, nombre, descripcion, estado) VALUES
 (1, 'Administrador', 'Control total del sistema', 1),

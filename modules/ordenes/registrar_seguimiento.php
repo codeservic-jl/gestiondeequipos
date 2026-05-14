@@ -178,10 +178,11 @@ try {
     $stmt->execute();
     $tipos_servicio = $stmt->fetchAll();
 
-    // Obtener seguimientos existentes con info de ventas
+    // Obtener seguimientos existentes con info de ventas y colega
     $stmt = $conn->prepare("
         SELECT so.*, u.nombre_completo as usuario_nombre,
-               v.producto as venta_producto, v.ganancia_neta as venta_ganancia
+               v.producto as venta_producto, v.valor_compra as venta_compra,
+               v.valor_venta as venta_precio, v.ganancia_neta as venta_ganancia
         FROM seguimientos_orden so
         LEFT JOIN usuarios u ON so.id_tecnico = u.id_usuario
         LEFT JOIN ventas_orden v ON v.id_seguimiento = so.id_seguimiento
@@ -242,36 +243,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $tipo_servicio = $_POST['tipo_servicio'];
         $procedimiento = trim($_POST['procedimiento']);
-        $valor_cobrar = isset($_POST['valor_cobrar']) && !empty($_POST['valor_cobrar']) ? $_POST['valor_cobrar'] : 0.00;
-        $id_tecnico = $_POST['id_tecnico'];
-        $nuevo_estado = $_POST['nuevo_estado'];
-        $fecha_actualizacion = date('Y-m-d H:i:s');
+        $valor_cobrar  = floatval($_POST['valor_cobrar'] ?? 0);
+        $id_tecnico    = $_POST['id_tecnico'];
+        $nuevo_estado  = $_POST['nuevo_estado'];
+
+        // Colega / tercero
+        $costo_externo       = null;
+        $descripcion_externo = null;
+        if (!empty($_POST['envio_colega']) && $_POST['envio_colega'] === 'si') {
+            $descripcion_externo = trim($_POST['descripcion_colega'] ?? '');
+            $costo_externo       = floatval($_POST['costo_colega'] ?? 0);
+        }
 
         // Registrar el seguimiento
         $stmt = $conn->prepare("
-            INSERT INTO seguimientos_orden (id_orden, id_tecnico, tipo_servicio, procedimiento, valor_cobrar, fecha_registro)
-            VALUES (?, ?, ?, ?, ?, NOW())
+            INSERT INTO seguimientos_orden
+                (id_orden, id_tecnico, tipo_servicio, procedimiento, valor_cobrar,
+                 costo_externo, descripcion_externo, fecha_registro)
+            VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
         ");
         $stmt->execute([
-            $id_orden, 
-            $id_tecnico, 
-            $tipo_servicio, 
-            $procedimiento, 
-            $valor_cobrar
+            $id_orden, $id_tecnico, $tipo_servicio, $procedimiento,
+            $valor_cobrar, $costo_externo, $descripcion_externo
         ]);
 
         $id_seguimiento = $conn->lastInsertId();
 
-        // Registrar venta si se indicó
+        // Registrar venta de producto si se indicó
         if (!empty($_POST['vendio_algo']) && $_POST['vendio_algo'] === 'si') {
-            $producto  = trim($_POST['producto_vendido'] ?? '');
-            $ganancia  = floatval($_POST['ganancia_neta'] ?? 0);
-            if (!empty($producto) && $ganancia >= 0) {
+            $producto      = trim($_POST['producto_vendido'] ?? '');
+            $valor_compra  = floatval($_POST['valor_compra'] ?? 0);
+            $valor_venta   = floatval($_POST['valor_venta'] ?? 0);
+            $ganancia_neta = $valor_venta - $valor_compra;
+            if (!empty($producto)) {
                 $stmt = $conn->prepare("
-                    INSERT INTO ventas_orden (id_orden, id_seguimiento, producto, ganancia_neta, id_usuario_registro)
-                    VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO ventas_orden
+                        (id_orden, id_seguimiento, producto, valor_compra, valor_venta, ganancia_neta, id_usuario_registro)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                 ");
-                $stmt->execute([$id_orden, $id_seguimiento, $producto, $ganancia, $_SESSION['user_id']]);
+                $stmt->execute([$id_orden, $id_seguimiento, $producto, $valor_compra, $valor_venta, $ganancia_neta, $_SESSION['user_id']]);
             }
         }
 
@@ -329,7 +339,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Recargar los seguimientos
         $stmt = $conn->prepare("
             SELECT so.*, u.nombre_completo as usuario_nombre,
-                   v.producto as venta_producto, v.ganancia_neta as venta_ganancia
+                   v.producto as venta_producto, v.valor_compra as venta_compra,
+                   v.valor_venta as venta_precio, v.ganancia_neta as venta_ganancia
             FROM seguimientos_orden so
             LEFT JOIN usuarios u ON so.id_tecnico = u.id_usuario
             LEFT JOIN ventas_orden v ON v.id_seguimiento = so.id_seguimiento
@@ -611,6 +622,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             Valor a Cobrar
                                         </label>
                                         <input type="number" name="valor_cobrar" step="0.01" min="0"
+                                            oninput="calcularGananciaOrden()"
                                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                                             placeholder="0.00">
                                         <p class="text-xs text-gray-500 mt-1">Dejar en 0 si no hay cobro</p>
@@ -646,7 +658,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </div>
                                 </div>
 
-                                <!-- ── Sección: Registro de Venta ── -->
+                                <!-- ── Sección: Venta de producto ── -->
                                 <div class="mt-6">
                                     <div class="border-2 border-dashed border-amber-300 bg-amber-50 rounded-xl p-5">
                                         <label class="flex items-center gap-3 cursor-pointer select-none">
@@ -659,7 +671,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             </span>
                                         </label>
 
-                                        <div id="seccion_venta" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4" style="display:none">
+                                        <div id="seccion_venta" class="mt-4 space-y-3" style="display:none">
                                             <div>
                                                 <label class="block text-sm font-semibold text-gray-700 mb-1">
                                                     Producto vendido <span class="text-red-500">*</span>
@@ -668,23 +680,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
                                                        placeholder="Ej: Memoria RAM 8GB, Cable HDMI…">
                                             </div>
+                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                                <div>
+                                                    <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                                        Valor de compra <span class="text-red-500">*</span>
+                                                        <span class="text-xs text-gray-400 font-normal">(lo que costó)</span>
+                                                    </label>
+                                                    <div class="relative">
+                                                        <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
+                                                        <input type="number" name="valor_compra" id="valor_compra"
+                                                               min="0" step="0.01"
+                                                               oninput="calcularGananciaVenta()"
+                                                               class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                                                               placeholder="0.00">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                                        Valor de venta <span class="text-red-500">*</span>
+                                                        <span class="text-xs text-gray-400 font-normal">(lo que cobró)</span>
+                                                    </label>
+                                                    <div class="relative">
+                                                        <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
+                                                        <input type="number" name="valor_venta" id="valor_venta"
+                                                               min="0" step="0.01"
+                                                               oninput="calcularGananciaVenta()"
+                                                               class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                                                               placeholder="0.00">
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                                        Ganancia del producto
+                                                        <span class="text-xs text-gray-400 font-normal">(auto)</span>
+                                                    </label>
+                                                    <div class="relative">
+                                                        <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
+                                                        <input type="number" id="ganancia_producto_display"
+                                                               class="w-full pl-7 pr-3 py-2 border border-gray-200 bg-gray-100 rounded-lg text-green-700 font-bold"
+                                                               placeholder="0.00" readonly tabindex="-1">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ── Sección: Envío a colega/tercero ── -->
+                                <div class="mt-4">
+                                    <div class="border-2 border-dashed border-blue-200 bg-blue-50 rounded-xl p-5">
+                                        <label class="flex items-center gap-3 cursor-pointer select-none">
+                                            <input type="checkbox" name="envio_colega" id="envio_colega" value="si"
+                                                   onchange="toggleSeccionColega(this)"
+                                                   class="w-5 h-5 rounded accent-blue-600 cursor-pointer">
+                                            <span class="font-semibold text-gray-800 text-base">
+                                                <i class="fas fa-people-carry text-blue-500 mr-2"></i>
+                                                ¿Se envió el equipo a un colega o taller externo?
+                                            </span>
+                                        </label>
+
+                                        <div id="seccion_colega" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3" style="display:none">
                                             <div>
                                                 <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                                    Ganancia neta <span class="text-red-500">*</span>
-                                                    <span class="text-xs text-gray-500 font-normal ml-1">(precio venta − costo producto)</span>
+                                                    Descripción <span class="text-red-500">*</span>
+                                                    <span class="text-xs text-gray-400 font-normal">(quién o qué servicio)</span>
+                                                </label>
+                                                <input type="text" name="descripcion_colega" id="descripcion_colega"
+                                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                                                       placeholder="Ej: Taller de pantallas Juan, Técnico especialista…">
+                                            </div>
+                                            <div>
+                                                <label class="block text-sm font-semibold text-gray-700 mb-1">
+                                                    Lo que nos cobran <span class="text-red-500">*</span>
                                                 </label>
                                                 <div class="relative">
                                                     <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
-                                                    <input type="number" name="ganancia_neta" id="ganancia_neta"
+                                                    <input type="number" name="costo_colega" id="costo_colega"
                                                            min="0" step="0.01"
-                                                           class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                                                           oninput="calcularGananciaOrden()"
+                                                           class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
                                                            placeholder="0.00">
                                                 </div>
-                                                <p class="text-xs text-amber-700 mt-1">
+                                                <p class="text-xs text-blue-700 mt-1">
                                                     <i class="fas fa-info-circle mr-1"></i>
-                                                    Esta ganancia se registra para el reporte de rentabilidad
+                                                    Se resta del valor cobrado al cliente
                                                 </p>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ── Resumen de ganancia de la orden ── -->
+                                <div id="resumen_ganancia" class="mt-4 hidden">
+                                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex flex-wrap gap-6 items-center">
+                                        <div class="text-center">
+                                            <p class="text-xs text-gray-500 uppercase tracking-wide">Cobrado al cliente</p>
+                                            <p class="text-xl font-bold text-gray-800" id="resumen_cobrar">$0.00</p>
+                                        </div>
+                                        <div class="text-gray-400 text-2xl">−</div>
+                                        <div class="text-center">
+                                            <p class="text-xs text-gray-500 uppercase tracking-wide">Costo colega</p>
+                                            <p class="text-xl font-bold text-red-600" id="resumen_colega">$0.00</p>
+                                        </div>
+                                        <div class="text-gray-400 text-2xl">=</div>
+                                        <div class="text-center">
+                                            <p class="text-xs text-gray-500 uppercase tracking-wide">Ganancia neta orden</p>
+                                            <p class="text-xl font-bold text-green-700" id="resumen_ganancia_val">$0.00</p>
                                         </div>
                                     </div>
                                 </div>
@@ -738,14 +839,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         </span>
                                                         <?php if ($seguimiento['valor_cobrar'] > 0): ?>
                                                             <span class="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
-                                                                $<?php echo number_format($seguimiento['valor_cobrar'], 2); ?>
+                                                                Cobrado: $<?php echo number_format($seguimiento['valor_cobrar'], 2); ?>
+                                                            </span>
+                                                        <?php endif; ?>
+                                                        <?php if (!empty($seguimiento['costo_externo'])): ?>
+                                                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                                                                <i class="fas fa-people-carry mr-1"></i>
+                                                                <?php echo htmlspecialchars($seguimiento['descripcion_externo'] ?? 'Colega'); ?>:
+                                                                −$<?php echo number_format($seguimiento['costo_externo'], 2); ?>
+                                                            </span>
+                                                            <?php
+                                                            $ganancia_orden = floatval($seguimiento['valor_cobrar']) - floatval($seguimiento['costo_externo']);
+                                                            ?>
+                                                            <span class="px-3 py-1 <?php echo $ganancia_orden >= 0 ? 'bg-green-200 text-green-900' : 'bg-red-100 text-red-800'; ?> text-sm font-bold rounded-full">
+                                                                Ganancia orden: $<?php echo number_format($ganancia_orden, 2); ?>
                                                             </span>
                                                         <?php endif; ?>
                                                         <?php if (!empty($seguimiento['venta_producto'])): ?>
                                                             <span class="px-3 py-1 bg-amber-100 text-amber-800 text-sm font-medium rounded-full">
                                                                 <i class="fas fa-shopping-bag mr-1"></i>
                                                                 <?php echo htmlspecialchars($seguimiento['venta_producto']); ?>
-                                                                — Ganancia: $<?php echo number_format($seguimiento['venta_ganancia'], 2); ?>
+                                                                (compra $<?php echo number_format($seguimiento['venta_compra'], 2); ?> /
+                                                                venta $<?php echo number_format($seguimiento['venta_precio'], 2); ?>) —
+                                                                Ganancia: $<?php echo number_format($seguimiento['venta_ganancia'], 2); ?>
                                                             </span>
                                                         <?php endif; ?>
                                                     </div>
@@ -770,18 +886,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script>
         function toggleSeccionVenta(checkbox) {
             var seccion = document.getElementById('seccion_venta');
-            seccion.style.display = checkbox.checked ? 'grid' : 'none';
-            var producto = document.getElementById('producto_vendido');
-            var ganancia = document.getElementById('ganancia_neta');
+            seccion.style.display = checkbox.checked ? 'block' : 'none';
+            var producto      = document.getElementById('producto_vendido');
+            var valorCompra   = document.getElementById('valor_compra');
+            var valorVenta    = document.getElementById('valor_venta');
             if (checkbox.checked) {
-                producto.required = true;
-                ganancia.required = true;
+                producto.required    = true;
+                valorCompra.required = true;
+                valorVenta.required  = true;
                 producto.focus();
             } else {
-                producto.required = false;
-                ganancia.required = false;
-                producto.value = '';
-                ganancia.value = '';
+                producto.required    = false;
+                valorCompra.required = false;
+                valorVenta.required  = false;
+                producto.value  = '';
+                valorCompra.value = '';
+                valorVenta.value  = '';
+                document.getElementById('ganancia_producto_display').value = '';
+            }
+        }
+
+        function calcularGananciaVenta() {
+            var compra   = parseFloat(document.getElementById('valor_compra').value) || 0;
+            var venta    = parseFloat(document.getElementById('valor_venta').value)  || 0;
+            var ganancia = venta - compra;
+            var display  = document.getElementById('ganancia_producto_display');
+            display.value = ganancia.toFixed(2);
+            display.style.color = ganancia >= 0 ? '#16a34a' : '#dc2626';
+        }
+
+        function toggleSeccionColega(checkbox) {
+            var seccion = document.getElementById('seccion_colega');
+            seccion.style.display = checkbox.checked ? 'grid' : 'none';
+            var desc  = document.getElementById('descripcion_colega');
+            var costo = document.getElementById('costo_colega');
+            if (checkbox.checked) {
+                desc.required  = true;
+                costo.required = true;
+                desc.focus();
+            } else {
+                desc.required  = false;
+                costo.required = false;
+                desc.value  = '';
+                costo.value = '';
+                calcularGananciaOrden();
+            }
+        }
+
+        function calcularGananciaOrden() {
+            var cobrar   = parseFloat(document.querySelector('input[name="valor_cobrar"]').value) || 0;
+            var colega   = parseFloat(document.getElementById('costo_colega').value) || 0;
+            var resumen  = document.getElementById('resumen_ganancia');
+            var colegaActivo = document.getElementById('envio_colega').checked;
+
+            if (cobrar > 0 || colegaActivo) {
+                resumen.classList.remove('hidden');
+                document.getElementById('resumen_cobrar').textContent     = '$' + cobrar.toFixed(2);
+                document.getElementById('resumen_colega').textContent      = '$' + colega.toFixed(2);
+                var ganancia = cobrar - colega;
+                var el = document.getElementById('resumen_ganancia_val');
+                el.textContent  = '$' + ganancia.toFixed(2);
+                el.style.color  = ganancia >= 0 ? '#15803d' : '#dc2626';
+            } else {
+                resumen.classList.add('hidden');
             }
         }
 
