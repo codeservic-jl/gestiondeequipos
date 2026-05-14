@@ -58,27 +58,23 @@ class MobileUX {
     }
 
     handleSwipeLeft() {
-        // Navegar hacia adelante si es posible
-        const nextButton = document.querySelector('[data-next]');
-        if (nextButton) {
-            nextButton.click();
+        // Swipe izquierda: cerrar sidebar si está abierto
+        if (window.mobileMenu && window.mobileMenu.isOpen) {
+            window.mobileMenu.closeMenu();
+            return;
         }
     }
 
     handleSwipeRight() {
-        // Navegar hacia atrás
-        const backButton = document.querySelector('[data-back]');
-        if (backButton) {
-            backButton.click();
-        } else {
-            // Volver atrás en el historial
-            window.history.back();
+        // Swipe derecha: abrir sidebar si está cerrado
+        if (window.mobileMenu && !window.mobileMenu.isOpen && window.innerWidth < 768) {
+            window.mobileMenu.openMenu();
+            return;
         }
     }
 
     handleDoubleTap(e) {
-        // Prevenir zoom en doble tap
-        e.preventDefault();
+        // No interferir con el comportamiento nativo de iOS
     }
 
     // Configurar tablas responsivas
@@ -162,17 +158,6 @@ class MobileUX {
 
     // Mejorar formularios en móvil
     setupFormImprovements() {
-        // Auto-focus en el primer campo
-        const forms = document.querySelectorAll('form');
-        forms.forEach(form => {
-            const firstInput = form.querySelector('input, textarea, select');
-            if (firstInput && window.innerWidth < 768) {
-                setTimeout(() => {
-                    firstInput.focus();
-                }, 500);
-            }
-        });
-
         // Mejorar select en móvil
         const selects = document.querySelectorAll('select');
         selects.forEach(select => {

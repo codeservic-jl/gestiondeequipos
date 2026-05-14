@@ -310,13 +310,13 @@ $current_page = getCurrentPage();
     
     @media (max-width: 768px) {
         body {
-            padding-top: 4rem; /* espacio para el botón hamburguesa fijo */
+            padding-top: calc(4rem + env(safe-area-inset-top, 0px));
         }
 
         .sidebar {
             transform: translateX(-100%);
             z-index: 50;
-            /* NO usar display:none: mantener en DOM para que la transición CSS funcione */
+            padding-top: env(safe-area-inset-top, 0px);
         }
 
         .sidebar.active {
@@ -328,12 +328,9 @@ $current_page = getCurrentPage();
         }
 
         #menuButton {
+            top: calc(1rem + env(safe-area-inset-top, 0px));
             z-index: 60;
             transition: all 0.3s ease;
-        }
-
-        #menuButton:hover {
-            transform: scale(1.1);
         }
     }
 </style>

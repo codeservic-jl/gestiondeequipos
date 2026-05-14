@@ -103,6 +103,11 @@ CREATE TABLE IF NOT EXISTS ordenes_trabajo (
   id_cliente int(11) NOT NULL,
   id_equipo int(11) NOT NULL,
   descripcion_problema text DEFAULT NULL,
+  valor_estimado decimal(10,2) DEFAULT NULL,
+  abono_inicial decimal(10,2) DEFAULT 0.00,
+  estado_pago varchar(20) DEFAULT 'Pendiente',
+  fecha_abono datetime DEFAULT NULL,
+  usuario_abono int(11) DEFAULT NULL,
   estado enum('Pendiente','En Proceso','Completado','Entregado') DEFAULT 'Pendiente',
   id_usuario_registro int(11) NOT NULL,
   tecnico_responsable_id int(11) NOT NULL,
@@ -118,6 +123,20 @@ CREATE TABLE IF NOT EXISTS ordenes_trabajo (
   CONSTRAINT ordenes_trabajo_ibfk_2 FOREIGN KEY (id_equipo) REFERENCES equipos (id_equipo),
   CONSTRAINT ordenes_trabajo_ibfk_3 FOREIGN KEY (id_usuario_registro) REFERENCES usuarios (id_usuario),
   CONSTRAINT ordenes_trabajo_ibfk_4 FOREIGN KEY (id_sucursal) REFERENCES sucursales (id_sucursal)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS abonos_orden (
+  id_abono int(11) NOT NULL AUTO_INCREMENT,
+  id_orden int(11) NOT NULL,
+  monto decimal(10,2) NOT NULL,
+  tipo_abono varchar(50) DEFAULT 'Inicial',
+  metodo_pago varchar(50) DEFAULT NULL,
+  observaciones text DEFAULT NULL,
+  id_usuario_registro int(11) NOT NULL,
+  fecha_registro datetime DEFAULT current_timestamp(),
+  PRIMARY KEY (id_abono),
+  KEY fk_abono_orden (id_orden),
+  CONSTRAINT abonos_orden_ibfk_1 FOREIGN KEY (id_orden) REFERENCES ordenes_trabajo (id_orden)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS orden_equipos (
@@ -148,6 +167,15 @@ CREATE TABLE IF NOT EXISTS seguimientos_orden (
   CONSTRAINT seguimientos_orden_ibfk_2 FOREIGN KEY (id_tecnico) REFERENCES usuarios (id_usuario)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE IF NOT EXISTS orden_estados (
+  id_orden_estado int(11) NOT NULL AUTO_INCREMENT,
+  nombre_estado varchar(100) NOT NULL,
+  descripcion varchar(200) DEFAULT NULL,
+  color varchar(7) DEFAULT '#6B7280',
+  estado tinyint(1) DEFAULT 1,
+  PRIMARY KEY (id_orden_estado)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 INSERT IGNORE INTO tipos_usuario (id_tipo, nombre, descripcion, estado) VALUES
 (1, 'Administrador', 'Control total del sistema', 1),
 (2, 'Técnico', 'Personal técnico de mantenimiento', 1),
@@ -175,6 +203,13 @@ INSERT IGNORE INTO tipos_servicio (id_tipo_servicio, nombre, descripcion, estado
 (5, 'Reparación', 'Reparación general', 1),
 (6, 'Actualización', 'Actualización de componentes', 1),
 (7, 'Otro', 'Otros servicios', 1);
+
+INSERT IGNORE INTO orden_estados (id_orden_estado, nombre_estado, estado) VALUES
+(1, 'Pendiente', 1),
+(2, 'En Proceso', 1),
+(3, 'Completado', 1),
+(4, 'Entregado', 1),
+(5, 'Cancelado', 1);
 
 INSERT IGNORE INTO usuarios (id_usuario, nombre_completo, usuario, password, id_tipo, id_sucursal, estado) VALUES
 (1, 'Administrador', 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1, 1, 1);
