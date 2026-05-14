@@ -1,0 +1,11 @@
+{
+    "require": {
+        "php": ">=8.2",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "ext-mysqli": "*",
+        "ext-gd": "*",
+        "ext-mbstring": "*",
+        "ext-fileinfo": "*"
+    }
+}
