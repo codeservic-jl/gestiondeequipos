@@ -260,11 +260,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Actualizar el estado de la orden
         $stmt = $conn->prepare("
-            UPDATE ordenes_trabajo 
-            SET estado = ?, fecha_actualizacion = ?
+            UPDATE ordenes_trabajo
+            SET estado = ?
             WHERE id_orden = ?
         ");
-        $stmt->execute([$nuevo_estado, $fecha_actualizacion, $id_orden]);
+        $stmt->execute([$nuevo_estado, $id_orden]);
 
         // Procesar imágenes si se subieron
         if (isset($_FILES['imagenes']) && !empty($_FILES['imagenes']['name'][0])) {
@@ -471,7 +471,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="flex items-center justify-between mb-8">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-800">
-                            <i class="fas fa-clipboard-check text-blue-600 mr-3"></i>
+                            <i class="fas fa-clipboard-check text-green-700 mr-3"></i>
                             Registrar Seguimiento
                         </h1>
                         <p class="text-gray-600 mt-2">Orden: <?php echo htmlspecialchars($orden['codigo']); ?></p>
@@ -482,7 +482,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <i class="fas fa-eye mr-2"></i>Ver Orden
                         </a>
                         <a href="lista.php" 
-                           class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                           class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition-colors">
                             <i class="fas fa-list mr-2"></i>Lista de Órdenes
                         </a>
                     </div>
@@ -521,14 +521,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="lg:col-span-1">
                         <div class="bg-white rounded-lg shadow-md p-6">
                             <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                                <i class="fas fa-info-circle text-blue-600 mr-2"></i>
+                                <i class="fas fa-info-circle text-green-700 mr-2"></i>
                                 Información de la Orden
                             </h2>
                             
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Código:</label>
-                                    <p class="text-lg font-semibold text-blue-600"><?php echo htmlspecialchars($orden['codigo']); ?></p>
+                                    <p class="text-lg font-semibold text-green-700"><?php echo htmlspecialchars($orden['codigo']); ?></p>
                                 </div>
 
                                 <div>
@@ -830,7 +830,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         '<br><button type="button" onclick="clearFileSelection()" class="mt-2 px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700">Limpiar selección</button>';
                 } else {
                     infoDiv.className = 'mt-2 text-sm text-gray-600 bg-green-50 p-3 rounded border border-green-200 file-validation-info';
-                    infoDiv.innerHTML = info + '<em class="text-blue-600">Las imágenes se redimensionarán automáticamente a máximo 1200x1200 píxeles y se comprimirán.</em>';
+                    infoDiv.innerHTML = info + '<em class="text-green-700">Las imágenes se redimensionarán automáticamente a máximo 1200x1200 píxeles y se comprimirán.</em>';
                 }
             }
             

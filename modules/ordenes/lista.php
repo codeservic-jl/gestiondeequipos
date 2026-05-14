@@ -156,7 +156,7 @@ $ordenes = $stmt->fetchAll();
                         <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
                             <a href="?pagina=<?php echo $i; ?>"
                                 class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium 
-                                  <?php echo $i === $pagina_actual ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-50'; ?>">
+                                  <?php echo $i === $pagina_actual ? 'text-green-700 bg-green-50' : 'text-gray-700 hover:bg-gray-50'; ?>">
                                 <?php echo $i; ?>
                             </a>
                         <?php endfor; ?>
@@ -208,7 +208,7 @@ $ordenes = $stmt->fetchAll();
                 let html = '<nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">';
 
                 for (let i = 1; i <= totalPages; i++) {
-                    html += `<a href="?pagina=${i}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium ${i === currentPage ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:bg-gray-50'}">${i}</a>`;
+                    html += `<a href="?pagina=${i}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium ${i === currentPage ? 'text-green-700 bg-green-50' : 'text-gray-700 hover:bg-gray-50'}">${i}</a>`;
                 }
 
                 html += '</nav>';

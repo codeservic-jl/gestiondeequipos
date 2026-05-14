@@ -59,7 +59,7 @@ $ordenes = $stmt->fetchAll();
                             class="w-full px-4 py-2 border rounded-lg">
                     </div>
                 </div>
-                <button type="submit" class="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                <button type="submit" class="mt-4 w-full bg-green-700 text-white py-2 px-4 rounded-lg hover:bg-green-800">
                     Buscar
                 </button>
             </form>

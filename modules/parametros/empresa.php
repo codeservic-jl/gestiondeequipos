@@ -166,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             Cancelar
                         </button>
                         <button type="submit" 
-                                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                                class="bg-green-700 text-white px-6 py-2 rounded-lg hover:bg-green-800 transition-colors duration-200">
                             <i class="fas fa-save mr-2"></i>Guardar Cambios
                         </button>
                     </div>

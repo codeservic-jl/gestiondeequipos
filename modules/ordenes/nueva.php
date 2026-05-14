@@ -906,7 +906,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="flex items-center justify-between mb-6">
                         <div>
                             <h1 class="text-3xl font-bold text-gray-800">
-                                <i class="fas fa-plus-circle text-blue-600 mr-3"></i>
+                                <i class="fas fa-plus-circle text-green-700 mr-3"></i>
                                 Nueva Orden de Trabajo
                             </h1>
                             <p class="text-gray-600 mt-2">Complete la información para crear una nueva orden de trabajo</p>
@@ -1089,7 +1089,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div x-show="tipoEquipo === 'nuevo'" class="space-y-4">
                                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
                                             <div class="flex items-start">
-                                                <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                                                <i class="fas fa-info-circle text-green-700 mt-1 mr-3"></i>
                                                 <div class="text-sm text-blue-800">
                                                     <strong>Información importante:</strong> Solo la marca es obligatoria. Si no conoce el modelo o número de serie, se usarán valores por defecto: "S/N" para modelo y se generará un número de serie automático.
                                                 </div>
@@ -1172,7 +1172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-4">
                                     <div class="flex items-start">
-                                        <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                                        <i class="fas fa-info-circle text-green-700 mt-1 mr-3"></i>
                                         <div class="text-sm text-blue-800">
                                             <strong>Información importante:</strong> Seleccione el tipo de cliente para activar las validaciones correspondientes.
                                         </div>
@@ -1243,7 +1243,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </div>
                                         <div class="ml-3">
                                             <p class="text-blue-700 font-medium">Información importante:</p>
-                                            <p class="text-blue-600 text-sm">Si no conoce algunos datos del equipo, puede dejarlos vacíos. Se usarán valores por defecto: "S/N" para marca/modelo y se generará un número de serie automático.</p>
+                                            <p class="text-green-700 text-sm">Si no conoce algunos datos del equipo, puede dejarlos vacíos. Se usarán valores por defecto: "S/N" para marca/modelo y se generará un número de serie automático.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -1331,7 +1331,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         
                         <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                             <div class="flex items-start">
-                                <i class="fas fa-info-circle text-blue-600 mt-1 mr-3"></i>
+                                <i class="fas fa-info-circle text-green-700 mt-1 mr-3"></i>
                                 <div class="text-sm text-blue-800">
                                     <strong>Información importante:</strong> 
                                     El cliente puede realizar un abono inicial al dejar su equipo. 
@@ -1539,7 +1539,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <i class="fas fa-arrow-left mr-2"></i>Cancelar
                         </a>
                         <button type="submit" 
-                                class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                                class="bg-green-700 text-white px-8 py-3 rounded-lg hover:bg-green-800 transition-colors font-semibold">
                             <i class="fas fa-save mr-2"></i>Crear Orden de Trabajo
                         </button>
                     </div>

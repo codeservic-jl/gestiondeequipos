@@ -199,7 +199,7 @@ $usuarios = $stmt->fetchAll();
                     <nav class="flex space-x-2">
                         <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
                             <a href="?pagina=<?php echo $i; ?><?php echo $termino_busqueda ? '&buscar=' . urlencode($termino_busqueda) : ''; ?>"
-                                class="px-3 py-1 rounded <?php echo $i === $pagina_actual ? 'bg-blue-900 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'; ?>">
+                                class="px-3 py-1 rounded <?php echo $i === $pagina_actual ? 'bg-green-800 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'; ?>">
                                 <?php echo $i; ?>
                             </a>
                         <?php endfor; ?>
@@ -256,7 +256,7 @@ $usuarios = $stmt->fetchAll();
             function updatePagination(totalPages, currentPage) {
                 let html = '<nav class="flex space-x-2">';
                 for (let i = 1; i <= totalPages; i++) {
-                    html += `<a href="?pagina=${i}" class="px-3 py-1 rounded ${i === currentPage ? 'bg-blue-900 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${i}</a>`;
+                    html += `<a href="?pagina=${i}" class="px-3 py-1 rounded ${i === currentPage ? 'bg-green-800 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}">${i}</a>`;
                 }
                 html += '</nav>';
                 paginationContainer.innerHTML = html;

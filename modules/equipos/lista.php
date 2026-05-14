@@ -134,7 +134,7 @@ $equipos = $stmt->fetchAll();
                                 <i class="fas fa-search"></i>
                             </button>
                         </div>
-                        <a href="nuevo.php" class="w-full md:w-auto bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 flex items-center justify-center transition-colors duration-200 shadow-md">
+                        <a href="nuevo.php" class="w-full md:w-auto bg-green-800 text-white px-4 py-2 rounded-lg hover:bg-green-900 flex items-center justify-center transition-colors duration-200 shadow-md">
                             <i class="fas fa-plus mr-2"></i> Nuevo Equipo
                         </a>
                     </div>
@@ -157,7 +157,7 @@ $equipos = $stmt->fetchAll();
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">
                                         <div class="flex items-center space-x-2">
                                             <a href="ver.php?id=<?php echo $equipo['id_equipo']; ?>"
-                                                class="text-blue-600 hover:text-blue-800">
+                                                class="text-green-700 hover:text-blue-800">
                                                 <i class="fas fa-eye"></i>
                                             </a>
                                             <a href="editar.php?id=<?php echo $equipo['id_equipo']; ?>"
@@ -187,7 +187,7 @@ $equipos = $stmt->fetchAll();
                         <nav class="flex space-x-2">
                             <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
                                 <a href="?pagina=<?php echo $i; ?><?php echo $termino_busqueda ? '&buscar=' . urlencode($termino_busqueda) : ''; ?>"
-                                    class="px-3 py-1 rounded <?php echo $i === $pagina_actual ? 'bg-blue-900 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'; ?>">
+                                    class="px-3 py-1 rounded <?php echo $i === $pagina_actual ? 'bg-green-800 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'; ?>">
                                     <?php echo $i; ?>
                                 </a>
                             <?php endfor; ?>

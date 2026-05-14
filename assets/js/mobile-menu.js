@@ -81,7 +81,7 @@ class MobileMenu {
         if (!document.getElementById('mobile-overlay')) {
             const overlay = document.createElement('div');
             overlay.id = 'mobile-overlay';
-            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden';
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:45;';
             overlay.addEventListener('click', () => this.closeMenu());
             document.body.appendChild(overlay);
         }
