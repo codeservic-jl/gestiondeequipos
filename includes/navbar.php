@@ -67,9 +67,9 @@ function getCurrentPage() {
 $current_page = getCurrentPage();
 ?>
 <style>
-    .bg-primary-pink { background-color:#0c184c; }
-    .hover-bg-primary-pink:hover { background-color:rgb(56, 86, 139); }
-    
+    .bg-primary-pink { background-color:#1a3318; }
+    .hover-bg-primary-pink:hover { background-color:#2a4e27; }
+
     /* Estilos para elementos de menú activos */
     .nav-item {
         display: flex;
@@ -79,15 +79,15 @@ $current_page = getCurrentPage();
         transition: all 0.2s ease-in-out;
         text-decoration: none;
     }
-    
+
     .nav-item:hover {
-        background-color: #1e40af;
+        background-color: #2a4e27;
         color: white;
         padding: 0.875rem 1.5rem;
     }
-    
+
     .nav-item.active {
-        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+        background: linear-gradient(135deg, #3d9939 0%, #5AC456 100%);
         color: white;
         border-right: 4px solid #fbbf24;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -95,7 +95,7 @@ $current_page = getCurrentPage();
         padding: 1rem 1.5rem;
         margin: 0.125rem 0;
     }
-    
+
     .nav-item.active::before {
         content: '';
         position: absolute;
@@ -106,16 +106,16 @@ $current_page = getCurrentPage();
         background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
         box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
     }
-    
+
     .nav-item.active i {
         color: #fbbf24;
         animation: pulse-glow 2s infinite;
     }
-    
+
     .nav-item.active span {
         font-weight: 600;
     }
-    
+
     @keyframes pulse-glow {
         0%, 100% {
             text-shadow: 0 0 5px rgba(251, 191, 36, 0.5);
@@ -124,7 +124,7 @@ $current_page = getCurrentPage();
             text-shadow: 0 0 15px rgba(251, 191, 36, 0.8), 0 0 20px rgba(251, 191, 36, 0.6);
         }
     }
-    
+
     /* Estilos para submenús activos */
     .submenu-item {
         display: flex;
@@ -134,22 +134,22 @@ $current_page = getCurrentPage();
         transition: all 0.2s ease-in-out;
         text-decoration: none;
     }
-    
+
     .submenu-item:hover {
-        background-color: #1e40af;
+        background-color: #2a4e27;
         color: white;
         padding: 0.75rem 1.5rem 0.75rem 3rem;
     }
-    
+
     .submenu-item.active {
-        background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+        background: linear-gradient(135deg, #3d9939 0%, #5AC456 100%);
         color: white;
         border-right: 4px solid #fbbf24;
         position: relative;
         padding: 0.875rem 1.5rem 0.875rem 3rem;
         margin: 0.125rem 0;
     }
-    
+
     .submenu-item.active::before {
         content: '';
         position: absolute;
@@ -159,29 +159,29 @@ $current_page = getCurrentPage();
         width: 4px;
         background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
     }
-    
+
     .submenu-item.active i {
         color: #fbbf24;
     }
-    
+
     .submenu-item.active span {
         font-weight: 600;
     }
-    
+
     /* Responsive para menú activo */
     @media (max-width: 768px) {
         .nav-item.active,
         .submenu-item.active {
-            background-color: #2563eb;
+            background-color: #5AC456;
             color: white;
             border-right: 4px solid #fbbf24;
         }
-        
+
         .nav-item.active i,
         .submenu-item.active i {
             color: #fbbf24;
         }
-        
+
         .nav-item.active span,
         .submenu-item.active span {
             font-weight: 600;
@@ -309,29 +309,29 @@ $current_page = getCurrentPage();
     }
     
     @media (max-width: 768px) {
+        body {
+            padding-top: 4rem; /* espacio para el botón hamburguesa fijo */
+        }
+
         .sidebar {
             transform: translateX(-100%);
             z-index: 50;
+            /* NO usar display:none: mantener en DOM para que la transición CSS funcione */
         }
-        
+
         .sidebar.active {
             transform: translateX(0);
         }
-        
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-        
+
         .main-content {
             margin-left: 0;
         }
-        
-        /* Botón de menú móvil mejorado */
+
         #menuButton {
             z-index: 60;
             transition: all 0.3s ease;
         }
-        
+
         #menuButton:hover {
             transform: scale(1.1);
         }
@@ -339,7 +339,7 @@ $current_page = getCurrentPage();
 </style>
 
 <!-- Sidebar -->
-<nav class="sidebar bg-[#0c184c] text-white shadow-lg">
+<nav class="sidebar bg-[#1a3318] text-white shadow-lg">
     <div class="p-6 flex flex-col items-center border-b border-gray-700">
         <div class="w-20 h-20 rounded-full bg-white overflow-hidden mb-4">
             <!-- Si tienes una imagen de usuario, reemplaza el div por una imagen -->
@@ -415,8 +415,7 @@ $current_page = getCurrentPage();
         </div>
         <?php endif; ?>
 
-        <a href="<?php echo $base_url; ?>logout.php" 
-           onclick="return confirm('⚠️ ¿Está seguro de que desea cerrar sesión?\n\nSe perderá el acceso al sistema.')"
+        <a href="<?php echo $base_url; ?>logout.php"
            class="logout-button logout-warning flex items-center px-6 py-4 text-white mt-auto transition-all duration-300 border-l-4 border-red-400 shadow-lg hover:shadow-xl transform hover:scale-105">
             <i class="fas fa-sign-out-alt w-5 text-xl"></i>
             <span class="ml-3 font-bold text-lg">Cerrar Sesión</span>
@@ -428,7 +427,7 @@ $current_page = getCurrentPage();
 </nav>
 
 <!-- Botón de menú móvil -->
-<button id="menuButton" class="fixed top-4 left-4 z-50 md:hidden bg-primary-pink p-2 rounded-lg text-white">
+<button id="menuButton" class="fixed top-4 left-4 z-50 md:hidden bg-[#5AC456] p-2 rounded-lg text-white shadow-lg">
     <i class="fas fa-bars"></i>
 </button>
 
@@ -451,10 +450,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Confirmación mejorada
         logoutButton.addEventListener('click', function(e) {
+            e.preventDefault();
             const confirmed = confirm('⚠️ ADVERTENCIA ⚠️\n\n¿Está seguro de que desea cerrar sesión?\n\n• Se perderá el acceso al sistema\n• Deberá volver a iniciar sesión\n• Cualquier trabajo no guardado se perderá\n\n¿Desea continuar?');
-            if (!confirmed) {
-                e.preventDefault();
-                return false;
+            if (confirmed) {
+                window.location.href = this.href;
             }
         });
     }

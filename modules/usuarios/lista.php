@@ -60,10 +60,10 @@ $usuarios = $stmt->fetchAll();
     <title>Usuarios - Ingreso de equipos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         .bg-navy-blue {
-            background-color: #000080;
+            background-color: #5AC456;
         }
     </style>
 </head>
@@ -142,7 +142,7 @@ $usuarios = $stmt->fetchAll();
                             <i class="fas fa-search"></i>
                         </button>
                     </div>
-                    <a href="nuevo.php" class="bg-navy-blue text-white px-4 py-2 rounded-lg hover:bg-blue-900">
+                    <a href="nuevo.php" class="bg-navy-blue text-white px-4 py-2 rounded-lg hover:bg-green-700">
                         <i class="fas fa-plus"></i> Nuevo Usuario
                     </a>
                 </div>
@@ -165,7 +165,7 @@ $usuarios = $stmt->fetchAll();
                             <tr class="hover:bg-gray-50">
                                 <td class="px-6 py-4 text-sm">
                                     <a href="editar.php?id=<?php echo $usuario['id_usuario']; ?>"
-                                        class="text-navy-blue hover:text-blue-900 mr-3">
+                                        class="text-navy-blue hover:text-green-700 mr-3">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     

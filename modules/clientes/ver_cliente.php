@@ -57,7 +57,7 @@ try {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #000080;
+            --primary-color: #2d6b2b;
             --secondary-color: #1a237e;
             --accent-color: #304ffe;
         }

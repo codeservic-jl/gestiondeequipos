@@ -127,8 +127,14 @@ class NotificationSystem {
     }
 }
 
-// Inicializar sistema de notificaciones
-const notifications = new NotificationSystem();
+// Inicializar sistema de notificaciones cuando el DOM esté listo
+let notifications;
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => { notifications = new NotificationSystem(); window.notifications = notifications; });
+} else {
+    notifications = new NotificationSystem();
+    window.notifications = notifications;
+}
 
 // Función global para mostrar notificaciones
 function showNotification(message, type = 'info', duration = 5000) {

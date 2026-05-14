@@ -448,7 +448,7 @@ CREATE TABLE `usuarios` (
 
 
 CREATE TABLE `ingresoequiposcd`.`empresa` (`id_empresa` INT NOT NULL AUTO_INCREMENT , `nombre_empresa` VARCHAR(100) NOT NULL ,
- `slogan` VARCHAR(1000) NOT NULL , `leyenda1` VARCHAR(1000) NOT NULL , `leyenda2` VARCHAR(1000) NOT NULL , PRIMARY KEY (`id_empresa`)) ENGINE = InnoDB;
+ `slogan` VARCHAR(1000) NOT NULL , `leyenda1` VARCHAR(1000) NOT NULL , `leyenda2` VARCHAR(1000) NOT NULL , `iva` DECIMAL(5,2) NOT NULL DEFAULT 0.15 , PRIMARY KEY (`id_empresa`)) ENGINE = InnoDB;
 
 
 

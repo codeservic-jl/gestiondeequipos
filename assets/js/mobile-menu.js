@@ -41,8 +41,8 @@ class MobileMenu {
         // Cerrar menú al hacer clic en un enlace (en móvil)
         const menuLinks = this.sidebar.querySelectorAll('a');
         menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth < 768) {
+            link.addEventListener('click', (e) => {
+                if (window.innerWidth < 768 && !e.defaultPrevented) {
                     this.closeMenu();
                 }
             });
@@ -50,10 +50,7 @@ class MobileMenu {
     }
 
     setupResponsive() {
-        // Verificar si estamos en móvil al cargar
-        if (window.innerWidth < 768) {
-            this.sidebar.classList.add('hidden');
-        }
+        // El CSS ya maneja el estado inicial via transform, no se necesita display:none
     }
 
     toggleMenu() {
@@ -65,28 +62,18 @@ class MobileMenu {
     }
 
     openMenu() {
-        this.sidebar.classList.remove('hidden');
         this.sidebar.classList.add('active');
         this.isOpen = true;
         this.menuButton.innerHTML = '<i class="fas fa-times"></i>';
-        
-        // Deshabilitar scroll del body
         document.body.style.overflow = 'hidden';
-        
-        // Agregar overlay
         this.addOverlay();
     }
 
     closeMenu() {
-        this.sidebar.classList.add('hidden');
         this.sidebar.classList.remove('active');
         this.isOpen = false;
         this.menuButton.innerHTML = '<i class="fas fa-bars"></i>';
-        
-        // Habilitar scroll del body
         document.body.style.overflow = '';
-        
-        // Remover overlay
         this.removeOverlay();
     }
 

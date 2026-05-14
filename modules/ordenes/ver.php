@@ -314,7 +314,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
             .equipment-table {
                 width: 100%;
                 border-collapse: collapse;
-                border-color: #000080;
+                border-color: #2d6b2b;
             }
 
             /* Ocultar elementos no necesarios para impresión */
@@ -334,7 +334,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
         }
 
         :root {
-            --primary-color: #000080;
+            --primary-color: #2d6b2b;
             --secondary-color: #1a237e;
             --accent-color: #304ffe;
         }
@@ -914,17 +914,17 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
     <div id="imprimir_ticket" class="hidden">
         <div class="print-only" style="width: 210mm; height: 148.5mm; padding: 20mm; margin: 0 auto; background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);">
             <!-- Encabezado con logo, QR y datos de empresa -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #000080; padding-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px solid #5AC456; padding-bottom: 15px;">
                 <div style="width: 30%;">
                     <img src="../../assets/img/logo.png" alt="RGE" style="max-width: 120px; height: auto;">
-                    <div style="font-size: 12px; color: #000080; margin-top: 5px;"><?php echo htmlspecialchars($slogan) ?></div>
+                    <div style="font-size: 12px; color: #2d6b2b; margin-top: 5px;"><?php echo htmlspecialchars($slogan) ?></div>
                 </div>
                 <div style="width: 40%; text-align: center;">
                     <?php
                     $url_seguimiento = "http://{$_SERVER['HTTP_HOST']}/gestion/modules/ordenes/seguimiento_publico.php?orden=" . urlencode($orden['codigo']);
                     ?>
                     <div id="qrcode" style="display: flex; justify-content: center; margin-bottom: 5px;"></div>
-                    <div style="font-size: 9px; color: #000080;">Escanee para seguimiento</div>
+                    <div style="font-size: 9px; color: #2d6b2b;">Escanee para seguimiento</div>
                     <script>
                         var qr = qrcode(0, 'M');
                         qr.addData('<?php echo $url_seguimiento; ?>');
@@ -944,7 +944,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
             </div>
 
             <!-- Información de la orden y fecha -->
-            <div style="background: #000080; color: white; padding: 10px; margin-bottom: 15px; border-radius: 5px; display: flex; justify-content: space-between;">
+            <div style="background: #5AC456; color: white; padding: 10px; margin-bottom: 15px; border-radius: 5px; display: flex; justify-content: space-between;">
                 <div style="font-size: 16px; font-weight: bold;">ORDEN DE SERVICIO #<?php echo htmlspecialchars($orden['codigo']); ?></div>
                 <div>
                     <?php
@@ -956,7 +956,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
 
             <!-- Información del cliente -->
             <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #dee2e6;">
-                <div style="font-size: 14px; font-weight: bold; color: #000080; margin-bottom: 10px;">INFORMACIÓN DEL CLIENTE</div>
+                <div style="font-size: 14px; font-weight: bold; color: #2d6b2b; margin-bottom: 10px;">INFORMACIÓN DEL CLIENTE</div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
                     <div>
                         <strong>Cliente:</strong> <?php echo htmlspecialchars($orden['cliente']); ?><br>
@@ -1007,7 +1007,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
                 <b> Observacion general de la orden: </b> <?php echo nl2br(htmlspecialchars($orden['descripcion_problema'])); ?>
             </div>
                 <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                    <tr style="background: #000080; color: white;">
+                    <tr style="background: #5AC456; color: white;">
                         <th style="padding: 8px; text-align: left;">SERIE N.</th>
                         <th style="padding: 8px; text-align: left;">DESCRIPCIÓN</th>
                     </tr>

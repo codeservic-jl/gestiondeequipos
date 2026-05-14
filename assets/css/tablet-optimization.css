@@ -35,7 +35,7 @@
     select:focus,
     textarea:focus {
         outline: none;
-        border-color: #3b82f6;
+        border-color: #5AC456;
         box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
     
@@ -81,15 +81,15 @@
     /* Botón primario */
     .bg-blue-600,
     .btn-primary {
-        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        background: linear-gradient(135deg, #5AC456 0%, #3d9939 100%);
         color: white;
     }
-    
+
     .bg-blue-600:hover,
     .btn-primary:hover {
-        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+        background: linear-gradient(135deg, #3d9939 0%, #2d6b2b 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 4px 12px rgba(90, 196, 86, 0.3);
     }
     
     /* Cards y contenedores */
@@ -129,7 +129,7 @@
     }
     
     input[type="file"]:focus {
-        border-color: #3b82f6;
+        border-color: #5AC456;
         background: #eff6ff;
     }
     

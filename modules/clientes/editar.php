@@ -73,7 +73,7 @@ try {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         .bg-navy-blue {
-            background-color: #000080;
+            background-color: #5AC456;
         }
     </style>
 </head>
@@ -152,7 +152,7 @@ try {
                                 Cancelar
                             </a>
                             <button type="submit"
-                                class="px-4 py-2 bg-navy-blue text-white rounded-lg hover:bg-blue-900">
+                                class="px-4 py-2 bg-navy-blue text-white rounded-lg hover:bg-green-700">
                                 Guardar Cambios
                             </button>
                         </div>

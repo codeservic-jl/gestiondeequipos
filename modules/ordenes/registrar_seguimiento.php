@@ -339,7 +339,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="../../assets/css/tablet-optimization.css" rel="stylesheet">
     <style>
         .bg-navy-blue {
-            background-color: #000080;
+            background-color: #5AC456;
         }
 
         .parentesis {

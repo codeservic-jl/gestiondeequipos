@@ -70,7 +70,7 @@
 
 .table-modern th {
     @apply px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #3d9939 0%, #2d6b2b 100%);
     position: sticky;
     top: 0;
     z-index: 10;
