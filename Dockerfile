@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_mysql mysqli gd
 
-# Habilitar mod_rewrite de Apache
-RUN a2enmod rewrite
+# Asegurar un solo MPM y habilitar mod_rewrite
+RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
+    && a2enmod mpm_prefork rewrite
 
 # Suprimir advertencia de ServerName
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
