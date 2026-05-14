@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Actualizar la orden
         $stmt = $conn->prepare("
-            UPDATE ordenes_trabajo SET 
+            UPDATE ordenes_trabajo SET
                 descripcion_problema = ?,
                 tecnico_responsable_id = ?,
                 estado = ?,

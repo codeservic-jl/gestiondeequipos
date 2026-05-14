@@ -356,772 +356,507 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Seguimiento - Orden <?php echo $orden['codigo']; ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="../../assets/css/tablet-optimization.css" rel="stylesheet">
     <style>
-        .bg-navy-blue {
-            background-color: #5AC456;
+        .success-toast { animation: slideDown .4s ease; }
+        @keyframes slideDown {
+            from { transform: translateY(-16px); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
         }
-
-        .parentesis {
-            font-size: 11px;
-            color: #666;
-        }
-
-        .success-message {
-            animation: slideIn 0.5s ease-out;
-        }
-        @keyframes slideIn {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .timeline-item {
-            position: relative;
-            padding-left: 2rem;
-        }
-        .timeline-item::before {
+        .tl-item { position: relative; padding-left: 1.75rem; }
+        .tl-item::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0.5rem;
-            width: 0.75rem;
-            height: 0.75rem;
-            background: #3b82f6;
+            left: .2rem; top: .65rem;
+            width: .65rem; height: .65rem;
+            background: #22c55e;
             border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 0 0 2px #22c55e;
         }
-        .timeline-item::after {
+        .tl-item::after {
             content: '';
             position: absolute;
-            left: 0.375rem;
-            top: 1.25rem;
-            width: 2px;
-            height: calc(100% - 0.75rem);
-            background: #e5e7eb;
+            left: .48rem; top: 1.35rem;
+            width: 1px;
+            height: calc(100% - .6rem);
+            background: #d1fae5;
         }
-        .timeline-item:last-child::after {
-            display: none;
-        }
-        
-        /* Estilos específicos para tablet en este formulario - EXACTAMENTE como en test_php_tablet.html */
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .container {
-                padding: 1rem !important;
-            }
-            
-            .max-w-4xl {
-                max-width: 100% !important;
-            }
-            
-            .bg-white {
-                padding: 1.5rem !important;
-                margin: 0.5rem !important;
-            }
-            
-            .grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-                gap: 1.5rem !important;
-            }
-            
-            input, select, textarea {
-                font-size: 16px !important;
-                padding: 12px !important;
-                border-radius: 8px !important;
-                border: 2px solid #e5e7eb !important;
-            }
-            
-            input:focus, select:focus, textarea:focus {
-                outline: none !important;
-                border-color: #3b82f6 !important;
-                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
-            }
-            
-            button {
-                padding: 12px 20px !important;
-                font-size: 16px !important;
-                min-height: 44px !important;
-            }
-            
-            .flex.space-x-4 {
-                flex-direction: column !important;
-                gap: 1rem !important;
-            }
-            
-            .flex.space-x-4 > * {
-                width: 100% !important;
-                text-align: center !important;
-            }
+        .tl-item:last-child::after { display: none; }
+        .badge {
+            display: inline-flex; align-items: center; gap: .25rem;
+            font-size: .72rem; font-weight: 600;
+            padding: .2rem .55rem; border-radius: 9999px;
         }
     </style>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-50 min-h-screen">
     <?php include '../../includes/navbar.php'; ?>
 
     <div class="main-content">
-    <div class="container mx-auto px-4 py-8">
-        <div class="max-w-4xl mx-auto">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                                <div class="flex items-center justify-between mb-8">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-800">
-                            <i class="fas fa-clipboard-check text-green-700 mr-3"></i>
-                            Registrar Seguimiento
-                        </h1>
-                        <p class="text-gray-600 mt-2">Orden: <?php echo htmlspecialchars($orden['codigo']); ?></p>
-                    </div>
-                    <div class="flex space-x-4">
-                        <a href="ver.php?id=<?php echo $id_orden; ?>" 
-                           class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
-                            <i class="fas fa-eye mr-2"></i>Ver Orden
-                        </a>
-                        <a href="lista.php" 
-                           class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition-colors">
-                            <i class="fas fa-list mr-2"></i>Lista de Órdenes
-                        </a>
-                    </div>
-                </div>
+    <div class="max-w-5xl mx-auto px-4 py-6">
 
-                <?php if (isset($error)): ?>
-                    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6 rounded-r-lg">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-exclamation-triangle text-red-400"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-red-700 font-medium">Error:</p>
-                                <p class="text-red-600"><?php echo htmlspecialchars($error); ?></p>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <?php if (isset($success)): ?>
-                    <div class="bg-green-50 border-l-4 border-green-400 p-4 mb-6 rounded-r-lg success-message">
-                        <div class="flex">
-                            <div class="flex-shrink-0">
-                                <i class="fas fa-check-circle text-green-400"></i>
-                            </div>
-                            <div class="ml-3">
-                                <p class="text-green-700 font-medium">Éxito:</p>
-                                <p class="text-green-600"><?php echo htmlspecialchars($success); ?></p>
-                            </div>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Información de la Orden -->
-                    <div class="lg:col-span-1">
-                        <div class="bg-white rounded-lg shadow-md p-6">
-                            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                                <i class="fas fa-info-circle text-green-700 mr-2"></i>
-                                Información de la Orden
-                            </h2>
-                            
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Código:</label>
-                                    <p class="text-lg font-semibold text-green-700"><?php echo htmlspecialchars($orden['codigo']); ?></p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Cliente:</label>
-                                    <p class="text-gray-800"><?php echo htmlspecialchars($orden['cliente_nombre']); ?></p>
-                                    <p class="text-sm text-gray-600">ID: <?php echo htmlspecialchars($orden['identificacion']); ?></p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Equipo:</label>
-                                    <p class="text-gray-800"><?php echo htmlspecialchars($orden['marca'] . ' ' . $orden['modelo']); ?></p>
-                                    <p class="text-sm text-gray-600">S/N: <?php echo htmlspecialchars($orden['numero_serial']); ?></p>
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Problema:</label>
-                                    <p class="text-gray-800"><?php echo nl2br(htmlspecialchars($orden['descripcion_problema'])); ?></p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Técnico:</label>
-                                    <p class="text-gray-800"><?php echo htmlspecialchars($orden['tecnico_nombre'] ?? 'Por asignar'); ?></p>
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Sucursal:</label>
-                                    <p class="text-gray-800"><?php echo htmlspecialchars($orden['sucursal_nombre']); ?></p>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Fecha de Ingreso:</label>
-                                    <p class="text-gray-800"><?php echo date('d/m/Y H:i', strtotime($orden['fecha_ingreso'])); ?></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Formulario de Seguimiento -->
-                    <div class="lg:col-span-2">
-                        <div class="bg-white rounded-lg shadow-md p-6">
-                            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                                <i class="fas fa-plus-circle text-green-600 mr-2"></i>
-                                Nuevo Seguimiento
-                            </h2>
-                            
-                            <form method="POST" enctype="multipart/form-data">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Tipo de Servicio *
-                                        </label>
-                                        <select name="tipo_servicio" required
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                                            <option value="">Seleccione el tipo de servicio</option>
-                                            <?php foreach ($tipos_servicio as $tipo): ?>
-                                                <option value="<?php echo htmlspecialchars($tipo['nombre']); ?>">
-                                                    <?php echo htmlspecialchars($tipo['nombre']); ?>
-                                                    <?php if (!empty($tipo['descripcion'])): ?>
-                                                        - <?php echo htmlspecialchars($tipo['descripcion']); ?>
-                                                    <?php endif; ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Técnico Responsable *
-                                        </label>
-                                        <select name="id_tecnico" required
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                                            <option value="">Seleccione el técnico</option>
-                                            <?php
-                                            $stmt = $conn->query("SELECT u.id_usuario, u.nombre_completo, tu.nombre
-                                                        FROM usuarios u
-                                                        INNER JOIN tipos_usuario tu ON u.id_tipo = tu.id_tipo
-                                                        WHERE u.estado = 1 AND u.id_tipo = 2");
-                                            $tecnicos = $stmt->fetchAll();
-                                            foreach ($tecnicos as $tecnico): ?>
-                                                <option value="<?php echo $tecnico['id_usuario']; ?>">
-                                                    <?php echo htmlspecialchars($tecnico['nombre_completo'] . ' (' . $tecnico['nombre'] . ')'); ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Valor a Cobrar
-                                        </label>
-                                        <input type="number" name="valor_cobrar" step="0.01" min="0"
-                                            oninput="calcularGananciaOrden()"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                                            placeholder="0.00">
-                                        <p class="text-xs text-gray-500 mt-1">Dejar en 0 si no hay cobro</p>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Nuevo Estado de la Orden *
-                                        </label>
-                                        <select name="nuevo_estado" required
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                                            <option value="">Seleccione un estado</option>
-                                            <?php foreach ($estados as $estado): ?>
-                                                <option value="<?php echo $estado['nombre_estado']; ?>"
-                                                    <?php echo ($orden['estado'] == $estado['nombre_estado']) ? 'selected' : ''; ?>>
-                                                    <?php echo htmlspecialchars($estado['nombre_estado']); ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-
-                                    <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                                            Imágenes (Opcional)
-                                        </label>
-                                        <input type="file" name="imagenes[]" accept="image/*" multiple
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500">
-                                        <p class="text-xs text-gray-500 mt-1">
-                                            Puede seleccionar múltiples imágenes. Tamaño máximo por archivo: 10MB. 
-                                            Las imágenes se redimensionarán automáticamente a máximo 1200x1200 píxeles y se comprimirán.
-                                            Formatos permitidos: JPG, PNG, GIF, WEBP.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- ── Sección: Venta de producto ── -->
-                                <div class="mt-6">
-                                    <div class="border-2 border-dashed border-amber-300 bg-amber-50 rounded-xl p-5">
-                                        <label class="flex items-center gap-3 cursor-pointer select-none">
-                                            <input type="checkbox" name="vendio_algo" id="vendio_algo" value="si"
-                                                   onchange="toggleSeccionVenta(this)"
-                                                   class="w-5 h-5 rounded accent-green-600 cursor-pointer">
-                                            <span class="font-semibold text-gray-800 text-base">
-                                                <i class="fas fa-shopping-bag text-amber-500 mr-2"></i>
-                                                ¿Se vendió algún producto en esta visita?
-                                            </span>
-                                        </label>
-
-                                        <div id="seccion_venta" class="mt-4 space-y-3" style="display:none">
-                                            <div>
-                                                <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                                    Producto vendido <span class="text-red-500">*</span>
-                                                </label>
-                                                <input type="text" name="producto_vendido" id="producto_vendido"
-                                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-                                                       placeholder="Ej: Memoria RAM 8GB, Cable HDMI…">
-                                            </div>
-                                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                                <div>
-                                                    <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                                        Valor de compra <span class="text-red-500">*</span>
-                                                        <span class="text-xs text-gray-400 font-normal">(lo que costó)</span>
-                                                    </label>
-                                                    <div class="relative">
-                                                        <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
-                                                        <input type="number" name="valor_compra" id="valor_compra"
-                                                               min="0" step="0.01"
-                                                               oninput="calcularGananciaVenta()"
-                                                               class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-                                                               placeholder="0.00">
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                                        Valor de venta <span class="text-red-500">*</span>
-                                                        <span class="text-xs text-gray-400 font-normal">(lo que cobró)</span>
-                                                    </label>
-                                                    <div class="relative">
-                                                        <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
-                                                        <input type="number" name="valor_venta" id="valor_venta"
-                                                               min="0" step="0.01"
-                                                               oninput="calcularGananciaVenta()"
-                                                               class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-                                                               placeholder="0.00">
-                                                    </div>
-                                                </div>
-                                                <div>
-                                                    <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                                        Ganancia del producto
-                                                        <span class="text-xs text-gray-400 font-normal">(auto)</span>
-                                                    </label>
-                                                    <div class="relative">
-                                                        <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
-                                                        <input type="number" id="ganancia_producto_display"
-                                                               class="w-full pl-7 pr-3 py-2 border border-gray-200 bg-gray-100 rounded-lg text-green-700 font-bold"
-                                                               placeholder="0.00" readonly tabindex="-1">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- ── Sección: Envío a colega/tercero ── -->
-                                <div class="mt-4">
-                                    <div class="border-2 border-dashed border-blue-200 bg-blue-50 rounded-xl p-5">
-                                        <label class="flex items-center gap-3 cursor-pointer select-none">
-                                            <input type="checkbox" name="envio_colega" id="envio_colega" value="si"
-                                                   onchange="toggleSeccionColega(this)"
-                                                   class="w-5 h-5 rounded accent-blue-600 cursor-pointer">
-                                            <span class="font-semibold text-gray-800 text-base">
-                                                <i class="fas fa-people-carry text-blue-500 mr-2"></i>
-                                                ¿Se envió el equipo a un colega o taller externo?
-                                            </span>
-                                        </label>
-
-                                        <div id="seccion_colega" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3" style="display:none">
-                                            <div>
-                                                <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                                    Descripción <span class="text-red-500">*</span>
-                                                    <span class="text-xs text-gray-400 font-normal">(quién o qué servicio)</span>
-                                                </label>
-                                                <input type="text" name="descripcion_colega" id="descripcion_colega"
-                                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                                                       placeholder="Ej: Taller de pantallas Juan, Técnico especialista…">
-                                            </div>
-                                            <div>
-                                                <label class="block text-sm font-semibold text-gray-700 mb-1">
-                                                    Lo que nos cobran <span class="text-red-500">*</span>
-                                                </label>
-                                                <div class="relative">
-                                                    <span class="absolute left-3 top-2.5 text-gray-500 font-medium">$</span>
-                                                    <input type="number" name="costo_colega" id="costo_colega"
-                                                           min="0" step="0.01"
-                                                           oninput="calcularGananciaOrden()"
-                                                           class="w-full pl-7 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                                                           placeholder="0.00">
-                                                </div>
-                                                <p class="text-xs text-blue-700 mt-1">
-                                                    <i class="fas fa-info-circle mr-1"></i>
-                                                    Se resta del valor cobrado al cliente
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- ── Resumen de ganancia de la orden ── -->
-                                <div id="resumen_ganancia" class="mt-4 hidden">
-                                    <div class="bg-green-50 border border-green-200 rounded-xl p-4 flex flex-wrap gap-6 items-center">
-                                        <div class="text-center">
-                                            <p class="text-xs text-gray-500 uppercase tracking-wide">Cobrado al cliente</p>
-                                            <p class="text-xl font-bold text-gray-800" id="resumen_cobrar">$0.00</p>
-                                        </div>
-                                        <div class="text-gray-400 text-2xl">−</div>
-                                        <div class="text-center">
-                                            <p class="text-xs text-gray-500 uppercase tracking-wide">Costo colega</p>
-                                            <p class="text-xl font-bold text-red-600" id="resumen_colega">$0.00</p>
-                                        </div>
-                                        <div class="text-gray-400 text-2xl">=</div>
-                                        <div class="text-center">
-                                            <p class="text-xs text-gray-500 uppercase tracking-wide">Ganancia neta orden</p>
-                                            <p class="text-xl font-bold text-green-700" id="resumen_ganancia_val">$0.00</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-6">
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        Procedimiento Realizado *
-                                    </label>
-                                    <textarea name="procedimiento" required rows="4"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
-                                        placeholder="Describa el trabajo realizado, diagnóstico, reparación, o cualquier procedimiento importante..."></textarea>
-                                </div>
-
-                                <div class="mt-6 flex justify-end space-x-4">
-                                    <a href="lista.php" 
-                                       class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">
-                                        Cancelar
-                                    </a>
-                                    <button type="submit" 
-                                        class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-                                        <i class="fas fa-save mr-2"></i>Registrar Seguimiento
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Historial de Seguimientos -->
-                        <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-                            <h2 class="text-xl font-semibold text-gray-800 mb-4">
-                                <i class="fas fa-history text-purple-600 mr-2"></i>
-                                Historial de Seguimientos
-                            </h2>
-                            
-                            <?php if (empty($seguimientos)): ?>
-                                <div class="text-center py-8">
-                                    <i class="fas fa-clipboard-list text-gray-400 text-4xl mb-4"></i>
-                                    <p class="text-gray-500">No hay seguimientos registrados aún</p>
-                                </div>
-                            <?php else: ?>
-                                <div class="space-y-4">
-                                    <?php foreach ($seguimientos as $seguimiento): ?>
-                                        <div class="timeline-item">
-                                            <div class="bg-gray-50 rounded-lg p-4">
-                                                <div class="flex items-center justify-between mb-2">
-                                                    <div class="flex items-center space-x-3">
-                                                        <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
-                                                            <?php echo htmlspecialchars($seguimiento['tipo_servicio']); ?>
-                                                        </span>
-                                                        <span class="text-sm text-gray-500">
-                                                            <?php echo date('d/m/Y H:i', strtotime($seguimiento['fecha_registro'])); ?>
-                                                        </span>
-                                                        <?php if ($seguimiento['valor_cobrar'] > 0): ?>
-                                                            <span class="px-3 py-1 bg-green-100 text-green-800 text-sm font-medium rounded-full">
-                                                                Cobrado: $<?php echo number_format($seguimiento['valor_cobrar'], 2); ?>
-                                                            </span>
-                                                        <?php endif; ?>
-                                                        <?php if (!empty($seguimiento['costo_externo'])): ?>
-                                                            <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
-                                                                <i class="fas fa-people-carry mr-1"></i>
-                                                                <?php echo htmlspecialchars($seguimiento['descripcion_externo'] ?? 'Colega'); ?>:
-                                                                −$<?php echo number_format($seguimiento['costo_externo'], 2); ?>
-                                                            </span>
-                                                            <?php
-                                                            $ganancia_orden = floatval($seguimiento['valor_cobrar']) - floatval($seguimiento['costo_externo']);
-                                                            ?>
-                                                            <span class="px-3 py-1 <?php echo $ganancia_orden >= 0 ? 'bg-green-200 text-green-900' : 'bg-red-100 text-red-800'; ?> text-sm font-bold rounded-full">
-                                                                Ganancia orden: $<?php echo number_format($ganancia_orden, 2); ?>
-                                                            </span>
-                                                        <?php endif; ?>
-                                                        <?php if (!empty($seguimiento['venta_producto'])): ?>
-                                                            <span class="px-3 py-1 bg-amber-100 text-amber-800 text-sm font-medium rounded-full">
-                                                                <i class="fas fa-shopping-bag mr-1"></i>
-                                                                <?php echo htmlspecialchars($seguimiento['venta_producto']); ?>
-                                                                (compra $<?php echo number_format($seguimiento['venta_compra'], 2); ?> /
-                                                                venta $<?php echo number_format($seguimiento['venta_precio'], 2); ?>) —
-                                                                Ganancia: $<?php echo number_format($seguimiento['venta_ganancia'], 2); ?>
-                                                            </span>
-                                                        <?php endif; ?>
-                                                    </div>
-                                                    <span class="text-sm text-gray-500">
-                                                        Por: <?php echo htmlspecialchars($seguimiento['usuario_nombre']); ?>
-                                                    </span>
-                                                </div>
-                                                <p class="text-gray-800"><?php echo nl2br(htmlspecialchars($seguimiento['procedimiento'])); ?></p>
-                                            </div>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                </div>
+        <!-- Page header -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    <i class="fas fa-clipboard-check text-green-600"></i>
+                    Registrar Seguimiento
+                </h1>
+                <p class="text-sm text-gray-500 mt-0.5">Orden <span class="font-semibold text-green-700"><?php echo htmlspecialchars($orden['codigo']); ?></span></p>
+            </div>
+            <div class="flex gap-2">
+                <a href="ver.php?id=<?php echo $id_orden; ?>"
+                   class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-white border border-gray-200 text-gray-700 text-sm font-medium hover:bg-gray-50 transition">
+                    <i class="fas fa-eye"></i> Ver Orden
+                </a>
+                <a href="lista.php"
+                   class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition">
+                    <i class="fas fa-list"></i> Lista de Órdenes
+                </a>
             </div>
         </div>
+
+        <!-- Order info banner -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-4 mb-5">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div>
+                    <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Cliente</p>
+                    <p class="font-semibold text-gray-800"><?php echo htmlspecialchars($orden['cliente_nombre']); ?></p>
+                    <p class="text-xs text-gray-500"><?php echo htmlspecialchars($orden['identificacion']); ?></p>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Equipo</p>
+                    <p class="font-semibold text-gray-800"><?php echo htmlspecialchars($orden['marca'] . ' ' . $orden['modelo']); ?></p>
+                    <p class="text-xs text-gray-500">S/N: <?php echo htmlspecialchars($orden['numero_serial']); ?></p>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Técnico</p>
+                    <p class="font-semibold text-gray-800"><?php echo htmlspecialchars($orden['tecnico_nombre'] ?? 'Por asignar'); ?></p>
+                    <p class="text-xs text-gray-500"><?php echo htmlspecialchars($orden['sucursal_nombre']); ?></p>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-400 uppercase tracking-wide">Ingreso</p>
+                    <p class="font-semibold text-gray-800"><?php echo date('d/m/Y', strtotime($orden['fecha_ingreso'])); ?></p>
+                    <p class="text-xs text-gray-500"><?php echo date('H:i', strtotime($orden['fecha_ingreso'])); ?></p>
+                </div>
+            </div>
+            <?php if (!empty($orden['descripcion_problema'])): ?>
+            <div class="mt-3 pt-3 border-t border-gray-100">
+                <p class="text-xs font-medium text-gray-400 uppercase tracking-wide mb-1">Problema reportado</p>
+                <p class="text-sm text-gray-700"><?php echo nl2br(htmlspecialchars($orden['descripcion_problema'])); ?></p>
+            </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Alerts -->
+        <?php if (isset($error)): ?>
+        <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 mb-4 flex items-start gap-2">
+            <i class="fas fa-exclamation-triangle mt-0.5 flex-shrink-0"></i>
+            <span><?php echo htmlspecialchars($error); ?></span>
+        </div>
+        <?php endif; ?>
+
+        <?php if (isset($success)): ?>
+        <div class="bg-green-50 border border-green-200 text-green-800 rounded-xl px-4 py-3 mb-4 flex items-start gap-2 success-toast" id="successMsg">
+            <i class="fas fa-check-circle mt-0.5 flex-shrink-0 text-green-500"></i>
+            <span><?php echo htmlspecialchars($success); ?></span>
+        </div>
+        <?php endif; ?>
+
+        <!-- Seguimiento form -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6 mb-6">
+            <h2 class="text-base font-bold text-gray-800 mb-5 flex items-center gap-2">
+                <i class="fas fa-plus-circle text-green-600"></i>
+                Nuevo Seguimiento
+            </h2>
+
+            <form method="POST" enctype="multipart/form-data">
+                <!-- Tipo + Técnico -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Tipo de Servicio <span class="text-red-500">*</span></label>
+                        <select name="tipo_servicio" required
+                            class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white">
+                            <option value="">Seleccione el tipo de servicio</option>
+                            <?php foreach ($tipos_servicio as $tipo): ?>
+                                <option value="<?php echo htmlspecialchars($tipo['nombre']); ?>">
+                                    <?php echo htmlspecialchars($tipo['nombre']); ?>
+                                    <?php if (!empty($tipo['descripcion'])): ?> &ndash; <?php echo htmlspecialchars($tipo['descripcion']); ?><?php endif; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Técnico Responsable <span class="text-red-500">*</span></label>
+                        <select name="id_tecnico" required
+                            class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white">
+                            <option value="">Seleccione el técnico</option>
+                            <?php
+                            $stmt = $conn->query("SELECT u.id_usuario, u.nombre_completo, tu.nombre
+                                        FROM usuarios u
+                                        INNER JOIN tipos_usuario tu ON u.id_tipo = tu.id_tipo
+                                        WHERE u.estado = 1 AND u.id_tipo = 2");
+                            $tecnicos = $stmt->fetchAll();
+                            foreach ($tecnicos as $tecnico): ?>
+                                <option value="<?php echo $tecnico['id_usuario']; ?>">
+                                    <?php echo htmlspecialchars($tecnico['nombre_completo'] . ' (' . $tecnico['nombre'] . ')'); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Valor cobrar + Estado -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Valor a Cobrar</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-2.5 text-gray-500 text-sm font-medium">$</span>
+                            <input type="number" name="valor_cobrar" step="0.01" min="0"
+                                oninput="calcularGananciaOrden()"
+                                class="w-full pl-7 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                placeholder="0.00">
+                        </div>
+                        <p class="text-xs text-gray-400 mt-1">Dejar en 0 si no hay cobro</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">Nuevo Estado de la Orden <span class="text-red-500">*</span></label>
+                        <select name="nuevo_estado" required
+                            class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white">
+                            <option value="">Seleccione un estado</option>
+                            <?php foreach ($estados as $estado): ?>
+                                <option value="<?php echo $estado['nombre_estado']; ?>"
+                                    <?php echo ($orden['estado'] == $estado['nombre_estado']) ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($estado['nombre_estado']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Procedimiento -->
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Procedimiento Realizado <span class="text-red-500">*</span></label>
+                    <textarea name="procedimiento" required rows="4"
+                        class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                        placeholder="Describa el trabajo realizado, diagnóstico, reparación o cualquier procedimiento importante…"></textarea>
+                </div>
+
+                <!-- Imágenes -->
+                <div class="mb-5">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                        Imágenes <span class="text-xs font-normal text-gray-400">(Opcional)</span>
+                    </label>
+                    <input type="file" name="imagenes[]" accept="image/*" multiple
+                        class="w-full text-sm text-gray-600 border border-gray-300 rounded-lg px-3 py-2 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                    <p class="text-xs text-gray-400 mt-1">JPG, PNG, GIF, WEBP &middot; máx. 10 MB por archivo &middot; se redimensionan a 1200 &times; 1200 px</p>
+                </div>
+
+                <hr class="border-gray-100 mb-5">
+
+                <!-- Venta de producto -->
+                <div class="border border-amber-200 bg-amber-50 rounded-xl p-4 mb-4">
+                    <label class="flex items-center gap-3 cursor-pointer select-none">
+                        <input type="checkbox" name="vendio_algo" id="vendio_algo" value="si"
+                               onchange="toggleSeccionVenta(this)"
+                               class="w-4 h-4 rounded accent-amber-500 cursor-pointer">
+                        <span class="font-semibold text-gray-800 text-sm flex items-center gap-2">
+                            <i class="fas fa-shopping-bag text-amber-500"></i>
+                            ¿Se vendió algún producto en esta visita?
+                        </span>
+                    </label>
+
+                    <div id="seccion_venta" class="mt-4 space-y-3" style="display:none">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Producto vendido <span class="text-red-500">*</span></label>
+                            <input type="text" name="producto_vendido" id="producto_vendido"
+                                   class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                   placeholder="Ej: Memoria RAM 8GB, Cable HDMI…">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                                    Valor de compra <span class="text-red-500">*</span>
+                                    <span class="text-xs font-normal text-gray-400 ml-1">lo que costó</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-gray-500 text-sm">$</span>
+                                    <input type="number" name="valor_compra" id="valor_compra" min="0" step="0.01"
+                                           oninput="calcularGananciaVenta()"
+                                           class="w-full pl-7 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                           placeholder="0.00">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                                    Valor de venta <span class="text-red-500">*</span>
+                                    <span class="text-xs font-normal text-gray-400 ml-1">lo que cobró</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-gray-500 text-sm">$</span>
+                                    <input type="number" name="valor_venta" id="valor_venta" min="0" step="0.01"
+                                           oninput="calcularGananciaVenta()"
+                                           class="w-full pl-7 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                                           placeholder="0.00">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                                    Ganancia producto <span class="text-xs font-normal text-gray-400">auto</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2.5 text-gray-500 text-sm">$</span>
+                                    <input type="number" id="ganancia_producto_display"
+                                           class="w-full pl-7 pr-3 py-2.5 border border-gray-200 bg-gray-100 rounded-lg text-sm font-bold text-green-700"
+                                           placeholder="0.00" readonly tabindex="-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Envío a colega -->
+                <div class="border border-blue-200 bg-blue-50 rounded-xl p-4 mb-5">
+                    <label class="flex items-center gap-3 cursor-pointer select-none">
+                        <input type="checkbox" name="envio_colega" id="envio_colega" value="si"
+                               onchange="toggleSeccionColega(this)"
+                               class="w-4 h-4 rounded accent-blue-600 cursor-pointer">
+                        <span class="font-semibold text-gray-800 text-sm flex items-center gap-2">
+                            <i class="fas fa-people-carry text-blue-500"></i>
+                            ¿Se envió el equipo a un colega o taller externo?
+                        </span>
+                    </label>
+
+                    <div id="seccion_colega" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3" style="display:none">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                                Descripción <span class="text-red-500">*</span>
+                                <span class="text-xs font-normal text-gray-400 ml-1">quién o qué servicio</span>
+                            </label>
+                            <input type="text" name="descripcion_colega" id="descripcion_colega"
+                                   class="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                   placeholder="Ej: Taller de pantallas Juan…">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">Lo que nos cobran <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-gray-500 text-sm">$</span>
+                                <input type="number" name="costo_colega" id="costo_colega" min="0" step="0.01"
+                                       oninput="calcularGananciaOrden()"
+                                       class="w-full pl-7 pr-3 py-2.5 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                       placeholder="0.00">
+                            </div>
+                            <p class="text-xs text-blue-600 mt-1"><i class="fas fa-info-circle mr-1"></i>Se resta del valor cobrado al cliente</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resumen ganancia -->
+                <div id="resumen_ganancia" class="hidden mb-5">
+                    <div class="bg-green-50 border border-green-200 rounded-xl p-4">
+                        <p class="text-xs font-semibold text-green-800 uppercase tracking-wide mb-3">Resumen financiero de este seguimiento</p>
+                        <div class="flex flex-wrap gap-4 items-center">
+                            <div class="text-center">
+                                <p class="text-xs text-gray-500">Cobrado al cliente</p>
+                                <p class="text-lg font-bold text-gray-800" id="resumen_cobrar">$0.00</p>
+                            </div>
+                            <span class="text-gray-400 text-xl font-light">&minus;</span>
+                            <div class="text-center">
+                                <p class="text-xs text-gray-500">Costo colega</p>
+                                <p class="text-lg font-bold text-red-600" id="resumen_colega">$0.00</p>
+                            </div>
+                            <span class="text-gray-400 text-xl font-light">=</span>
+                            <div class="text-center">
+                                <p class="text-xs text-gray-500">Ganancia neta</p>
+                                <p class="text-lg font-bold text-green-700" id="resumen_ganancia_val">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-end gap-3">
+                    <a href="lista.php"
+                       class="px-5 py-2.5 rounded-lg text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                        Cancelar
+                    </a>
+                    <button type="submit"
+                        class="px-6 py-2.5 rounded-lg text-sm font-semibold bg-green-600 text-white hover:bg-green-700 transition flex items-center gap-2">
+                        <i class="fas fa-save"></i> Registrar Seguimiento
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Historial de Seguimientos -->
+        <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+            <h2 class="text-base font-bold text-gray-800 mb-5 flex items-center gap-2">
+                <i class="fas fa-history text-purple-600"></i>
+                Historial de Seguimientos
+                <span class="ml-1 text-xs font-normal bg-gray-100 text-gray-600 rounded-full px-2 py-0.5"><?php echo count($seguimientos); ?></span>
+            </h2>
+
+            <?php if (empty($seguimientos)): ?>
+                <div class="text-center py-10">
+                    <i class="fas fa-clipboard-list text-4xl text-gray-300 mb-3"></i>
+                    <p class="text-gray-400 text-sm">No hay seguimientos registrados aún</p>
+                </div>
+            <?php else: ?>
+                <div class="space-y-5">
+                    <?php foreach ($seguimientos as $seg): ?>
+                    <div class="tl-item pb-5">
+                        <div class="bg-gray-50 border border-gray-100 rounded-xl p-4">
+                            <div class="flex flex-wrap items-start justify-between gap-3 mb-3">
+                                <div class="flex flex-wrap gap-2 items-center">
+                                    <span class="badge bg-green-100 text-green-800">
+                                        <i class="fas fa-tools text-xs"></i>
+                                        <?php echo htmlspecialchars($seg['tipo_servicio']); ?>
+                                    </span>
+                                    <?php if ($seg['valor_cobrar'] > 0): ?>
+                                    <span class="badge bg-emerald-100 text-emerald-800">
+                                        <i class="fas fa-dollar-sign text-xs"></i>
+                                        Cobrado: $<?php echo number_format($seg['valor_cobrar'], 2); ?>
+                                    </span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($seg['costo_externo']) && $seg['costo_externo'] > 0): ?>
+                                    <span class="badge bg-blue-100 text-blue-800">
+                                        <i class="fas fa-people-carry text-xs"></i>
+                                        <?php echo htmlspecialchars($seg['descripcion_externo'] ?? 'Colega'); ?>: &minus;$<?php echo number_format($seg['costo_externo'], 2); ?>
+                                    </span>
+                                    <?php
+                                    $gan_ord = floatval($seg['valor_cobrar']) - floatval($seg['costo_externo']);
+                                    ?>
+                                    <span class="badge <?php echo $gan_ord >= 0 ? 'bg-green-200 text-green-900' : 'bg-red-100 text-red-800'; ?>">
+                                        Gan. orden: $<?php echo number_format($gan_ord, 2); ?>
+                                    </span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($seg['venta_producto'])): ?>
+                                    <span class="badge bg-amber-100 text-amber-800">
+                                        <i class="fas fa-shopping-bag text-xs"></i>
+                                        <?php echo htmlspecialchars($seg['venta_producto']); ?>
+                                        &middot; venta $<?php echo number_format($seg['venta_precio'], 2); ?>
+                                        &middot; gan. $<?php echo number_format($seg['venta_ganancia'], 2); ?>
+                                    </span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="text-right flex-shrink-0">
+                                    <p class="text-xs text-gray-500"><?php echo date('d/m/Y H:i', strtotime($seg['fecha_registro'])); ?></p>
+                                    <p class="text-xs text-gray-400">Por: <?php echo htmlspecialchars($seg['usuario_nombre']); ?></p>
+                                    <a href="editar_seguimiento.php?id=<?php echo $seg['id_seguimiento']; ?>"
+                                       class="inline-block mt-1 text-xs text-amber-600 hover:text-amber-800 font-medium">
+                                        <i class="fas fa-pencil-alt mr-0.5"></i>Editar
+                                    </a>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-700 leading-relaxed"><?php echo nl2br(htmlspecialchars($seg['procedimiento'])); ?></p>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
     </div>
     </div>
 
     <script>
-        function toggleSeccionVenta(checkbox) {
-            var seccion = document.getElementById('seccion_venta');
-            seccion.style.display = checkbox.checked ? 'block' : 'none';
-            var producto      = document.getElementById('producto_vendido');
-            var valorCompra   = document.getElementById('valor_compra');
-            var valorVenta    = document.getElementById('valor_venta');
-            if (checkbox.checked) {
-                producto.required    = true;
-                valorCompra.required = true;
-                valorVenta.required  = true;
-                producto.focus();
+        function toggleSeccionVenta(cb) {
+            document.getElementById('seccion_venta').style.display = cb.checked ? 'block' : 'none';
+            const p = document.getElementById('producto_vendido');
+            const c = document.getElementById('valor_compra');
+            const v = document.getElementById('valor_venta');
+            if (cb.checked) {
+                p.required = c.required = v.required = true;
+                p.focus();
             } else {
-                producto.required    = false;
-                valorCompra.required = false;
-                valorVenta.required  = false;
-                producto.value  = '';
-                valorCompra.value = '';
-                valorVenta.value  = '';
+                p.required = c.required = v.required = false;
+                p.value = c.value = v.value = '';
                 document.getElementById('ganancia_producto_display').value = '';
             }
         }
 
         function calcularGananciaVenta() {
-            var compra   = parseFloat(document.getElementById('valor_compra').value) || 0;
-            var venta    = parseFloat(document.getElementById('valor_venta').value)  || 0;
-            var ganancia = venta - compra;
-            var display  = document.getElementById('ganancia_producto_display');
-            display.value = ganancia.toFixed(2);
-            display.style.color = ganancia >= 0 ? '#16a34a' : '#dc2626';
+            const compra = parseFloat(document.getElementById('valor_compra').value) || 0;
+            const venta  = parseFloat(document.getElementById('valor_venta').value)  || 0;
+            const gan    = venta - compra;
+            const el     = document.getElementById('ganancia_producto_display');
+            el.value      = gan.toFixed(2);
+            el.style.color = gan >= 0 ? '#16a34a' : '#dc2626';
         }
 
-        function toggleSeccionColega(checkbox) {
-            var seccion = document.getElementById('seccion_colega');
-            seccion.style.display = checkbox.checked ? 'grid' : 'none';
-            var desc  = document.getElementById('descripcion_colega');
-            var costo = document.getElementById('costo_colega');
-            if (checkbox.checked) {
-                desc.required  = true;
-                costo.required = true;
-                desc.focus();
+        function toggleSeccionColega(cb) {
+            document.getElementById('seccion_colega').style.display = cb.checked ? 'grid' : 'none';
+            const d = document.getElementById('descripcion_colega');
+            const c = document.getElementById('costo_colega');
+            if (cb.checked) {
+                d.required = c.required = true;
+                d.focus();
             } else {
-                desc.required  = false;
-                costo.required = false;
-                desc.value  = '';
-                costo.value = '';
+                d.required = c.required = false;
+                d.value = c.value = '';
                 calcularGananciaOrden();
             }
         }
 
         function calcularGananciaOrden() {
-            var cobrar   = parseFloat(document.querySelector('input[name="valor_cobrar"]').value) || 0;
-            var colega   = parseFloat(document.getElementById('costo_colega').value) || 0;
-            var resumen  = document.getElementById('resumen_ganancia');
-            var colegaActivo = document.getElementById('envio_colega').checked;
-
-            if (cobrar > 0 || colegaActivo) {
+            const cobrar = parseFloat(document.querySelector('input[name="valor_cobrar"]').value) || 0;
+            const colega = parseFloat(document.getElementById('costo_colega').value) || 0;
+            const resumen = document.getElementById('resumen_ganancia');
+            if (cobrar > 0 || document.getElementById('envio_colega').checked) {
                 resumen.classList.remove('hidden');
-                document.getElementById('resumen_cobrar').textContent     = '$' + cobrar.toFixed(2);
-                document.getElementById('resumen_colega').textContent      = '$' + colega.toFixed(2);
-                var ganancia = cobrar - colega;
-                var el = document.getElementById('resumen_ganancia_val');
-                el.textContent  = '$' + ganancia.toFixed(2);
-                el.style.color  = ganancia >= 0 ? '#15803d' : '#dc2626';
+                document.getElementById('resumen_cobrar').textContent = '$' + cobrar.toFixed(2);
+                document.getElementById('resumen_colega').textContent  = '$' + colega.toFixed(2);
+                const gan = cobrar - colega;
+                const el  = document.getElementById('resumen_ganancia_val');
+                el.textContent = '$' + gan.toFixed(2);
+                el.style.color = gan >= 0 ? '#15803d' : '#dc2626';
             } else {
                 resumen.classList.add('hidden');
             }
         }
 
-        // Auto-hide success message after 5 seconds
-        setTimeout(function() {
-            const successMessage = document.querySelector('.success-message');
-            if (successMessage) {
-                successMessage.style.opacity = '0';
-                successMessage.style.transform = 'translateY(-20px)';
-                setTimeout(() => successMessage.remove(), 500);
-            }
-        }, 5000);
-
-        // Validación de archivos antes de enviar
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const fileInput = document.querySelector('input[type="file"]');
-            const maxSize = 100 * 1024 * 1024; // 100MB en bytes (se comprimirán automáticamente)
-            
-            if (fileInput.files.length > 0) {
-                for (let i = 0; i < fileInput.files.length; i++) {
-                    const file = fileInput.files[i];
-                    
-                    // Verificar tamaño (más permisivo ya que se comprimirán)
-                    if (file.size > maxSize) {
-                        e.preventDefault();
-                        alert('El archivo "' + file.name + '" es demasiado grande. Máximo 100MB por archivo.');
-                        return false;
-                    }
-                    
-                    // Verificar tipo de archivo
-                    if (!file.type.startsWith('image/')) {
-                        e.preventDefault();
-                        alert('El archivo "' + file.name + '" no es una imagen válida');
-                        return false;
-                    }
-                }
-            }
-
-            // Mostrar indicador de carga
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Procesando...';
-            submitBtn.disabled = true;
-
-            // Restaurar botón después de 15 segundos por si hay error
+        const toast = document.getElementById('successMsg');
+        if (toast) {
             setTimeout(() => {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }, 15000);
-        });
-
-        // Validación inmediata al seleccionar archivos
-        document.querySelector('input[type="file"]').addEventListener('change', function(e) {
-            const files = e.target.files;
-            const maxSize = 100 * 1024 * 1024; // 100MB
-            const maxSizeMB = 100;
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'mt-2 text-sm';
-            
-            // Limpiar información anterior
-            const oldInfo = this.parentNode.querySelector('.file-validation-info');
-            if (oldInfo) {
-                oldInfo.remove();
-            }
-            
-            if (files.length > 0) {
-                let hasError = false;
-                let errorMessage = '';
-                let info = '<strong>Archivos seleccionados:</strong><br>';
-                let totalSize = 0;
-                
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
-                    totalSize += file.size;
-                    
-                    // Verificar tamaño inmediatamente
-                    if (file.size > maxSize) {
-                        hasError = true;
-                        errorMessage += `• ${file.name} (${sizeMB} MB) - <span style="color: red;">❌ Demasiado grande (máximo ${maxSizeMB}MB)</span><br>`;
-                    } else {
-                        info += `• ${file.name} (${sizeMB} MB) - <span style="color: green;">✅ OK</span><br>`;
-                    }
-                    
-                    // Verificar tipo de archivo
-                    if (!file.type.startsWith('image/')) {
-                        hasError = true;
-                        errorMessage += `• ${file.name} - <span style="color: red;">❌ No es una imagen válida</span><br>`;
-                    }
-                }
-                
-                // Verificar tamaño total (aproximadamente 8MB límite del servidor)
-                const totalSizeMB = (totalSize / (1024 * 1024)).toFixed(2);
-                if (totalSize > 8 * 1024 * 1024) { // 8MB
-                    hasError = true;
-                    errorMessage += `<br><strong>⚠️ Advertencia:</strong> El tamaño total (${totalSizeMB} MB) puede exceder el límite del servidor (8MB).<br>`;
-                    errorMessage += '<em>Considere subir menos archivos o archivos más pequeños.</em><br>';
-                }
-                
-                if (hasError) {
-                    infoDiv.className = 'mt-2 text-sm text-red-600 bg-red-50 p-3 rounded border border-red-200 file-validation-info';
-                    infoDiv.innerHTML = '<strong>❌ Errores detectados:</strong><br>' + errorMessage + 
-                        '<br><em>Por favor, seleccione archivos válidos antes de continuar.</em>' +
-                        '<br><button type="button" onclick="clearFileSelection()" class="mt-2 px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700">Limpiar selección</button>';
-                } else {
-                    infoDiv.className = 'mt-2 text-sm text-gray-600 bg-green-50 p-3 rounded border border-green-200 file-validation-info';
-                    infoDiv.innerHTML = info + '<em class="text-green-700">Las imágenes se redimensionarán automáticamente a máximo 1200x1200 píxeles y se comprimirán.</em>';
-                }
-            }
-            
-            // Agregar nueva información
-            this.parentNode.appendChild(infoDiv);
-            
-            // Deshabilitar botón de envío si hay errores
-            const submitBtn = document.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                submitBtn.disabled = hasError;
-                if (hasError) {
-                    submitBtn.title = 'Corrija los errores en los archivos antes de continuar';
-                    submitBtn.style.opacity = '0.5';
-                } else {
-                    submitBtn.title = '';
-                    submitBtn.style.opacity = '1';
-                }
-            }
-        });
-
-        // Función para limpiar la selección de archivos
-        function clearFileSelection() {
-            const fileInput = document.querySelector('input[type="file"]');
-            if (!fileInput) return;
-            
-            fileInput.value = ''; // Limpiar el input de archivo
-            
-            // Buscar específicamente la información de validación de archivos
-            // Buscar en el contenedor padre del input de archivo
-            const fileContainer = fileInput.parentElement;
-            if (fileContainer) {
-                const infoDiv = fileContainer.querySelector('.file-validation-info');
-                if (infoDiv) {
-                    infoDiv.remove(); // Eliminar solo la información de validación
-                }
-            }
-            
-            // Habilitar el botón de envío
-            const submitBtn = document.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.title = '';
-                submitBtn.style.opacity = '1';
-            }
+                toast.style.transition = 'opacity .4s';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 4500);
         }
 
-        // Verificar límites del servidor al cargar la página
-        window.addEventListener('load', function() {
-            // Crear un archivo de prueba para verificar límites
-            const testFile = new File([''], 'test.txt', { type: 'text/plain' });
-            const formData = new FormData();
-            formData.append('test', testFile);
-            
-            // Enviar una petición de prueba para verificar límites
-            fetch('test_simple.php', {
-                method: 'POST',
-                body: formData
-            }).then(response => {
-                if (response.ok) {
-                    console.log('Servidor configurado correctamente para archivos grandes');
-                } else {
-                    console.warn('El servidor puede tener límites restrictivos');
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const fileInput = document.querySelector('input[type="file"]');
+            if (fileInput && fileInput.files.length > 0) {
+                for (const file of fileInput.files) {
+                    if (file.size > 100 * 1024 * 1024) {
+                        e.preventDefault();
+                        alert('El archivo "' + file.name + '" supera los 100 MB.');
+                        return;
+                    }
+                    if (!file.type.startsWith('image/')) {
+                        e.preventDefault();
+                        alert('El archivo "' + file.name + '" no es una imagen válida.');
+                        return;
+                    }
                 }
-            }).catch(error => {
-                console.warn('No se pudo verificar la configuración del servidor:', error);
-            });
+            }
+            const btn = this.querySelector('button[type="submit"]');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Procesando…';
+            btn.disabled  = true;
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-save mr-2"></i>Registrar Seguimiento';
+                btn.disabled = false;
+            }, 15000);
         });
     </script>
 </body>

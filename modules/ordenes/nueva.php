@@ -248,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $ultimo = $stmt->fetch();
         $siguiente_id = ($ultimo['ultimo'] ?? 0) + 1;
 
-        $codigo = 'RGE' . str_pad($siguiente_id, 5, '0', STR_PAD_LEFT) . $numero_serial;
+        $codigo = 'CS' . str_pad($siguiente_id, 5, '0', STR_PAD_LEFT) . $numero_serial;
 
         // Verificar que el código no exista
         $stmt = $conn->prepare("SELECT id_orden FROM ordenes_trabajo WHERE codigo = ?");

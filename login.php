@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="min-h-screen flex items-center justify-center">
         <div class="bg-white p-8 rounded-lg shadow-lg w-96">
             <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-navy-blue">RGE</h1>
+                <h1 class="text-3xl font-bold text-navy-blue">CODESERVIC</h1>
                 <p class="text-gray-600">Sistema de Gestión de Equipos</p>
             </div>
 

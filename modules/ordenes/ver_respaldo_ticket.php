@@ -540,7 +540,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
                     </div>
 
                     <div class="company-logo" style="margin: 10px 0;  margin-left: 25%;">
-                        <img src="../../assets/img/logo.png" alt="RGE" style="max-width: 150px;"><br>
+                        <img src="../../assets/img/logo.png" alt="CS" style="max-width: 150px;"><br>
                         <?php echo htmlspecialchars($slogan) ?>
                     </div>
                 </div>
