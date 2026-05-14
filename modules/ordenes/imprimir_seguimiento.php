@@ -440,14 +440,7 @@ $total_cobrado = floatval($seg['valor_cobrar']) + ($hay_venta ? floatval($seg['v
             <div class="fin-row">
                 <span class="fin-lbl">
                     Producto vendido
-                    <small>
-                        <?php echo htmlspecialchars($seg['venta_producto']); ?>
-                        &nbsp;·&nbsp; Compra: $<?php echo number_format($seg['venta_compra'], 2); ?>
-                        <span class="venta-badge">
-                            <i class="fas fa-shopping-bag"></i>
-                            Ganancia: $<?php echo number_format($seg['venta_ganancia'], 2); ?>
-                        </span>
-                    </small>
+                    <small><?php echo htmlspecialchars($seg['venta_producto']); ?></small>
                 </span>
                 <span class="fin-val">$<?php echo number_format($seg['venta_precio'], 2); ?></span>
             </div>
