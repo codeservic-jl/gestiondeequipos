@@ -159,4 +159,4 @@ showError('Error en la operación');
 
 ---
 
-**Desarrollado con ❤️ para mejorar la experiencia de usuario del sistema de gestión de equipos RGE** 
+**Desarrollado con ❤️ para mejorar la experiencia de usuario del sistema de Ingreso de equipos** 

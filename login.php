@@ -15,29 +15,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         // En la parte del procesamiento del formulario
-        if ($user) {
-            // Crear un nuevo hash con la contraseña proporcionada por el usuario
-            $newHash = password_hash($password, PASSWORD_DEFAULT);
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id_usuario'];
+            $_SESSION['user_name'] = $user['nombre_completo'];
+            $_SESSION['user_type'] = $user['id_tipo'];
+            $_SESSION['sucursal'] = $_POST['id_sucursal'];
+            $_SESSION['nombre_completo'] = $user['nombre_completo'];
 
-            // Actualizar solo el hash en la base de datos
-            $updateStmt = $conn->prepare("UPDATE usuarios SET password = ? WHERE usuario = ?");
-            $updateStmt->execute([$newHash, $usuario]);
-
-            // Intentar verificar con el nuevo hash
-            if (password_verify($password, $newHash)) {
-                $_SESSION['user_id'] = $user['id_usuario'];
-                $_SESSION['user_name'] = $user['nombre_completo'];
-                $_SESSION['user_type'] = $user['id_tipo'];
-                $_SESSION['sucursal'] = $_POST['id_sucursal']; // Guardamos la sucursal seleccionada en la sesión
-                $_SESSION['nombre_completo'] = $user['nombre_completo'];
-
-                header("Location: index.php");
-                exit();
-            } else {
-                $error = "Contraseña incorrecta";
-            }
+            header("Location: index.php");
+            exit();
         } else {
-            $error = "Usuario no encontrado";
+            $error = "Usuario o contraseña incorrectos";
         }
     } catch (PDOException $e) {
         $error = "Error en la base de datos";
@@ -52,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Gestión de Equipos RGE</title>
+    <title>Login - Ingreso de equipos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .bg-navy-blue {
