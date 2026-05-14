@@ -1,33 +1,30 @@
 // Mejoras de UX para dispositivos móviles
 class MobileUX {
     constructor() {
+        this.startX = 0;
+        this.startY = 0;
+        this.endX = 0;
+        this.endY = 0;
         this.init();
     }
 
     init() {
         this.setupTouchGestures();
         this.setupResponsiveTables();
-        this.setupMobileNavigation();
         this.setupScrollEffects();
         this.setupFormImprovements();
     }
 
     // Configurar gestos táctiles
     setupTouchGestures() {
-        // Swipe para navegación
-        let startX = 0;
-        let startY = 0;
-        let endX = 0;
-        let endY = 0;
-
         document.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
+            this.startX = e.touches[0].clientX;
+            this.startY = e.touches[0].clientY;
         });
 
         document.addEventListener('touchend', (e) => {
-            endX = e.changedTouches[0].clientX;
-            endY = e.changedTouches[0].clientY;
+            this.endX = e.changedTouches[0].clientX;
+            this.endY = e.changedTouches[0].clientY;
             this.handleSwipe();
         });
 
@@ -45,8 +42,8 @@ class MobileUX {
     }
 
     handleSwipe() {
-        const diffX = startX - endX;
-        const diffY = startY - endY;
+        const diffX = this.startX - this.endX;
+        const diffY = this.startY - this.endY;
         const minSwipeDistance = 50;
 
         if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > minSwipeDistance) {
@@ -131,44 +128,6 @@ class MobileUX {
         cells.forEach(cell => {
             cell.removeAttribute('data-label');
         });
-    }
-
-    // Configurar navegación móvil
-    setupMobileNavigation() {
-        const menuButton = document.getElementById('menuButton');
-        const sidebar = document.querySelector('.sidebar');
-        
-        if (menuButton && sidebar) {
-            menuButton.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-                this.toggleBodyScroll();
-            });
-
-            // Cerrar menú al hacer clic fuera
-            document.addEventListener('click', (e) => {
-                if (!sidebar.contains(e.target) && !menuButton.contains(e.target)) {
-                    sidebar.classList.remove('active');
-                    this.enableBodyScroll();
-                }
-            });
-        }
-    }
-
-    toggleBodyScroll() {
-        const body = document.body;
-        if (body.style.overflow === 'hidden') {
-            this.enableBodyScroll();
-        } else {
-            this.disableBodyScroll();
-        }
-    }
-
-    disableBodyScroll() {
-        document.body.style.overflow = 'hidden';
-    }
-
-    enableBodyScroll() {
-        document.body.style.overflow = '';
     }
 
     // Configurar efectos de scroll
