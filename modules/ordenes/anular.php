@@ -104,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="../../assets/css/modern-ux.css" rel="stylesheet">
     <script src="../../assets/js/notifications.js"></script>
     <script src="../../assets/js/mobile-ux.js"></script>
-    <script src="../../assets/js/mobile-menu.js"></script>
 </head>
 
 <body class="bg-gray-100">

@@ -68,8 +68,7 @@ $ordenes = $stmt->fetchAll();
     <link href="../../assets/css/tables.css" rel="stylesheet">
     <script src="../../assets/js/notifications.js"></script>
     <script src="../../assets/js/mobile-ux.js"></script>
-    <script src="../../assets/js/mobile-menu.js"></script>
-    <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 
 <body class="bg-gray-100">

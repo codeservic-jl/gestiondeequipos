@@ -102,7 +102,6 @@ try {
     <link href="../../assets/css/modern-ux.css" rel="stylesheet">
     <link href="../../assets/css/tables.css" rel="stylesheet">
     <script src="../../assets/js/notifications.js"></script>
-    <script src="../../assets/js/mobile-menu.js"></script>
 </head>
 
 <body class="bg-gray-100">
