@@ -39,12 +39,19 @@ function procesarImagenWebP($tmpFile, $destDir, $baseName, $maxWidth = 1200, $ma
     }
     imagecopyresampled($dst, $src, 0, 0, 0, 0, $newW, $newH, $imageInfo[0], $imageInfo[1]);
 
-    // Guardar como WebP
-    $webpName = pathinfo($baseName, PATHINFO_FILENAME) . '.webp';
-    $webpPath = rtrim($destDir, '/'). '/' . $webpName;
-    $ok = imagewebp($dst, $webpPath, $quality);
+    $baseStem = pathinfo($baseName, PATHINFO_FILENAME);
+    $destDir  = rtrim($destDir, '/');
+
+    // Guardar como WebP si está disponible, si no como JPEG
+    if (function_exists('imagewebp')) {
+        $outName = $baseStem . '.webp';
+        $ok = imagewebp($dst, $destDir . '/' . $outName, $quality);
+    } else {
+        $outName = $baseStem . '.jpg';
+        $ok = imagejpeg($dst, $destDir . '/' . $outName, $quality);
+    }
 
     imagedestroy($src);
     imagedestroy($dst);
-    return $ok ? $webpName : false;
+    return $ok ? $outName : false;
 }

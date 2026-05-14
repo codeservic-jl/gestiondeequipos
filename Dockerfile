@@ -1,14 +1,15 @@
 FROM php:8.2-cli
 
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema (incluye libwebp para GD)
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
+    libwebp-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar extensiones PHP
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+# Instalar extensiones PHP con soporte WebP
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install pdo pdo_mysql mysqli gd
 
 WORKDIR /app
