@@ -14,7 +14,7 @@
 
 /* Encabezados de tabla */
 .table-modern thead {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #3d9939 0%, #2d6b2b 100%);
 }
 
 .table-modern th {
@@ -123,8 +123,8 @@
 }
 
 .table-modern .badge-info {
-    background-color: #dbeafe;
-    color: #1e40af;
+    background-color: #dcfce7;
+    color: #2d6b2b;
 }
 
 /* Acciones en tablas */
@@ -150,11 +150,11 @@
 }
 
 .table-actions .action-view {
-    color: #2563eb;
+    color: #3d9939;
 }
 
 .table-actions .action-view:hover {
-    background-color: #dbeafe;
+    background-color: #dcfce7;
 }
 
 .table-actions .action-edit {
@@ -314,7 +314,7 @@
     height: 2rem;
     margin: -1rem 0 0 -1rem;
     border: 2px solid #e5e7eb;
-    border-top: 2px solid #2563eb;
+    border-top: 2px solid #5AC456;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

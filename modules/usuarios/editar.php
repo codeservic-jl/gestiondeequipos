@@ -100,12 +100,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        .bg-navy-blue { background-color: #000080; }
+        .bg-navy-blue { background-color: #5AC456; }
     </style>
 </head>
 <body class="bg-gray-100">
     <?php include '../../includes/navbar.php'; ?>
     
+    <div class="main-content">
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-2xl mx-auto">
             <div class="bg-white rounded-lg shadow-md p-6">
@@ -177,13 +178,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <a href="lista.php" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
                             Cancelar
                         </a>
-                        <button type="submit" class="px-4 py-2 bg-navy-blue text-white rounded-lg hover:bg-blue-900">
+                        <button type="submit" class="px-4 py-2 bg-navy-blue text-white rounded-lg hover:bg-green-700">
                             Guardar Cambios
                         </button>
                     </div>
                 </form>
             </div>
         </div>
+    </div>
     </div>
 </body>
 </html>

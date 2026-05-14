@@ -51,8 +51,8 @@ $ordenes = $stmt->fetchAll();
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        .bg-navy-blue { background-color: #000080; }
-        .text-navy-blue { color: #000080; }
+        .bg-navy-blue { background-color: #5AC456; }
+        .text-navy-blue { color: #2d6b2b; }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -62,7 +62,7 @@ $ordenes = $stmt->fetchAll();
     <div class="container mx-auto px-4 py-8">
         <div class="mb-6 flex items-center justify-between">
             <h2 class="text-2xl font-bold text-navy-blue">Detalles del Equipo</h2>
-            <a href="lista.php" class="text-navy-blue hover:text-blue-900">
+            <a href="lista.php" class="text-navy-blue hover:text-green-700">
                 <i class="fas fa-arrow-left"></i> Volver a la lista
             </a>
         </div>
@@ -125,7 +125,7 @@ $ordenes = $stmt->fetchAll();
                                     <td class="px-6 py-4"><?php echo htmlspecialchars($orden['tecnico']); ?></td>
                                     <td class="px-6 py-4">
                                         <a href="../ordenes/ver.php?id=<?php echo $orden['id_orden']; ?>" 
-                                           class="text-navy-blue hover:text-blue-900">
+                                           class="text-navy-blue hover:text-green-700">
                                             <i class="fas fa-eye"></i> Ver
                                         </a>
                                     </td>

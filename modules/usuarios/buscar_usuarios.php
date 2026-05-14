@@ -50,7 +50,7 @@ foreach ($usuarios as $usuario) {
     $html .= '<tr class="hover:bg-gray-50">';
     $html .= '<td class="px-6 py-4 text-sm">';
     if ($_SESSION['user_type'] == 1) {
-        $html .= '<a href="editar.php?id=' . $usuario['id_usuario'] . '" class="text-navy-blue hover:text-blue-900 mr-3">';
+        $html .= '<a href="editar.php?id=' . $usuario['id_usuario'] . '" class="text-navy-blue hover:text-green-700 mr-3">';
         $html .= '<i class="fas fa-edit"></i>';
         $html .= '</a>';
         $html .= '<a href="#" onclick="confirmarEliminacion(' . $usuario['id_usuario'] . ')" class="text-red-600 hover:text-red-900">';

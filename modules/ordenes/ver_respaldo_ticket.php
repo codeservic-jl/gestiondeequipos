@@ -279,7 +279,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
             .equipment-table {
                 width: 100%;
                 border-collapse: collapse;
-                border-color: #000080;
+                border-color: #2d6b2b;
             }
 
             /* Ocultar elementos no necesarios para impresión */
@@ -299,7 +299,7 @@ $leyenda2       = $datosEmpresa['leyenda2'] ?? '';
         }
 
         :root {
-            --primary-color: #000080;
+            --primary-color: #2d6b2b;
             --secondary-color: #1a237e;
             --accent-color: #304ffe;
         }

@@ -92,11 +92,11 @@ $labels_grafico = array_map(function ($dia) use ($dias_espanol) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .bg-primary {
-            background-color: #0c184c;
+            background-color: #5AC456;
         }
 
         .text-primary {
-            color: #0c184c;
+            color: #2d6b2b;
         }
     </style>
 </head>
@@ -104,9 +104,9 @@ $labels_grafico = array_map(function ($dia) use ($dias_espanol) {
 <body class="bg-gray-100">
     <?php include 'includes/navbar.php'; ?>
 
-    <div class="md:ml-64 p-4 md:p-8 transition-all duration-300"> <!-- Modificado esta línea -->
+    <div class="main-content p-4 md:p-8">
         <div class="mb-8">
-            <h1 class="text-2xl font-bold text-gray-800">   Dashboard</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
             <p class="text-gray-600">Resumen de actividades</p>
         </div>
 
@@ -214,11 +214,11 @@ $labels_grafico = array_map(function ($dia) use ($dias_espanol) {
                 datasets: [{
                     label: 'Órdenes',
                     data: <?php echo json_encode($datos_grafico); ?>,
-                    borderColor: '#0c184c',
+                    borderColor: '#5AC456',
                     backgroundColor: 'rgba(12, 24, 76, 0.1)',
                     tension: 0.4,
                     fill: true,
-                    pointBackgroundColor: '#0c184c'
+                    pointBackgroundColor: '#5AC456'
                 }]
             },
             options: {

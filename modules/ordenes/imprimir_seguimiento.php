@@ -59,15 +59,15 @@ if (!$seguimiento) {
         }
 
         .bg-navy-blue {
-            background-color: #000080;
+            background-color: #5AC456;
         }
 
         .border-navy-blue {
-            border-color: #000080;
+            border-color: #2d6b2b;
         }
 
         .text-navy-blue {
-            color: #000080;
+            color: #2d6b2b;
         }
 
         @media print {
@@ -86,7 +86,7 @@ if (!$seguimiento) {
     <div class="main-content">
     <!-- Botones de acción -->
     <div class="flex justify-end gap-4 mb-8 no-print">
-        <button onclick="window.print()" class="bg-navy-blue text-white px-6 py-2 rounded-lg hover:bg-blue-900">
+        <button onclick="window.print()" class="bg-navy-blue text-white px-6 py-2 rounded-lg hover:bg-green-700">
             <i class="fas fa-print mr-2"></i>Imprimir
         </button>
         <button onclick="window.history.back()" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">

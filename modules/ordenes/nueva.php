@@ -456,7 +456,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         .bg-navy-blue {
-            background-color: #000080;
+            background-color: #5AC456;
         }
         
         /* Estilos de sidebar y responsive - EXACTAMENTE como en test_php_tablet.html */
