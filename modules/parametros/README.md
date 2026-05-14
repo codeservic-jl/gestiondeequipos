@@ -1,4 +1,4 @@
-# Sección de Parámetros - Gestión de Equipos RGE
+# Sección de Parámetros - Ingreso de equipos
 
 Esta sección permite a los administradores gestionar los parámetros del sistema que son utilizados en toda la aplicación.
 

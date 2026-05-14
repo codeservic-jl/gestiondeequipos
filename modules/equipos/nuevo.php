@@ -9,15 +9,7 @@ require_once '../../config/database.php';
 $base_url = "../../";
 
 // Obtener clientes activos
-$query = "SELECT * FROM clientes WHERE estado = 1";
-if ($_SESSION['user_type'] != 1) {
-    $query .= " AND id_sucursal = :sucursal";
-    $stmt = $conn->prepare($query);
-    $stmt->execute(['sucursal' => $_SESSION['sucursal']]);
-    $clientes = $stmt->fetchAll();
-} else {
-    $clientes = $conn->query($query)->fetchAll();
-}
+$clientes = $conn->query("SELECT * FROM clientes WHERE estado = 1 ORDER BY nombre_apellido")->fetchAll();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
@@ -53,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo Equipo - Gestión de Equipos RGE</title>
+    <title>Nuevo Equipo - Ingreso de equipos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

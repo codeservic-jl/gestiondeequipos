@@ -86,7 +86,7 @@ $labels_grafico = array_map(function ($dia) use ($dias_espanol) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Gestión de Equipos RGE</title>
+    <title>Dashboard - Ingreso de equipos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -112,7 +112,7 @@ $labels_grafico = array_map(function ($dia) use ($dias_espanol) {
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <!-- Tarjeta de Órdenes -->
-            <div class="bg-white rounded-lg shadow p-1">
+            <div class="bg-white rounded-lg shadow p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-800">Órdenes Activas</h3>
                     <span class="text-green-500">+17%</span>
@@ -126,7 +126,7 @@ $labels_grafico = array_map(function ($dia) use ($dias_espanol) {
             </div>
 
             <!-- Tarjeta de Clientes -->
-            <div class="bg-white rounded-lg shadow p-1">
+            <div class="bg-white rounded-lg shadow p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-800">Total Clientes</h3>
                     <span class="text-green-500">+23%</span>
@@ -140,7 +140,7 @@ $labels_grafico = array_map(function ($dia) use ($dias_espanol) {
             </div>
 
             <!-- Tarjeta de Equipos -->
-            <div class="bg-white rounded-lg shadow p-1">
+            <div class="bg-white rounded-lg shadow p-6">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-lg font-semibold text-gray-800">Equipos Registrados</h3>
                     <span class="text-green-500">+15%</span>
