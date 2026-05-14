@@ -50,7 +50,11 @@ function getCurrentPage() {
     if (strpos($current_path, '/sucursales/') !== false) {
         return 'sucursales';
     }
-    
+
+    if (strpos($current_path, '/reportes/') !== false) {
+        return 'reportes';
+    }
+
     // Verificar páginas específicas
     if ($current_file === 'index.php' && strpos($current_path, '/modules/') === false) {
         return 'dashboard';
@@ -305,8 +309,14 @@ $current_page = getCurrentPage();
             <span class="ml-3">Equipos</span>
         </a>
 
+        <a href="<?php echo $base_url; ?>modules/reportes/index.php"
+           class="nav-item <?php echo $current_page === 'reportes' ? 'active' : ''; ?>">
+            <i class="fas fa-chart-bar w-5"></i>
+            <span class="ml-3">Reportes</span>
+        </a>
+
         <?php if ($_SESSION['user_type'] == 1): ?>
-        <a href="<?php echo $base_url; ?>modules/usuarios/lista.php" 
+        <a href="<?php echo $base_url; ?>modules/usuarios/lista.php"
            class="nav-item <?php echo $current_page === 'usuarios' ? 'active' : ''; ?>">
             <i class="fas fa-user-shield w-5"></i>
             <span class="ml-3">Usuarios</span>
